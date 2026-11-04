@@ -1,0 +1,41 @@
+{
+  "fonte": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "lidoEm": "2026-11-03",
+  "moeda": "USD",
+  "unidade": "por milhão de tokens (MTok)",
+  "notas": [
+    "Tabela «Model pricing»: entrada base, escrita de cache de 5 min e de 1 h, leitura de cache (hits and refreshes) e saída.",
+    "Os ids (claude-opus-5-5…) correspondem aos nomes da página (Claude Opus 5.5…).",
+    "Claude Haiku 5.5 tem dois preços: até 100 000 tokens de prompt e acima disso (entrada + escrita + leitura de cache do pedido).",
+    "Modo rápido (fast mode) só para Opus 5.5, Opus 5 e Opus 4.8: entrada e saída da tabela «Fast mode pricing»; as escritas e leituras de cache aplicam os mesmos multiplicadores sobre a entrada rápida.",
+    "Modelos que não estão aqui contam como «sem preço»."
+  ],
+  "modelos": {
+    "claude-fable-5-1": { "nome": "Claude Fable 5.1", "entrada": 10, "cache5m": 12.5, "cache1h": 20, "leitura": 0.25, "saida": 50 },
+    "claude-mythos-5-1": { "nome": "Claude Mythos 5.1", "entrada": 10, "cache5m": 12.5, "cache1h": 20, "leitura": 0.25, "saida": 50 },
+    "claude-fable-5": { "nome": "Claude Fable 5", "entrada": 10, "cache5m": 12.5, "cache1h": 20, "leitura": 1, "saida": 50 },
+    "claude-mythos-5": { "nome": "Claude Mythos 5", "entrada": 10, "cache5m": 12.5, "cache1h": 20, "leitura": 1, "saida": 50 },
+    "claude-opus-5-5": { "nome": "Claude Opus 5.5", "entrada": 4, "cache5m": 5, "cache1h": 8, "leitura": 0.2, "saida": 20 },
+    "claude-opus-5": { "nome": "Claude Opus 5", "entrada": 5, "cache5m": 6.25, "cache1h": 10, "leitura": 0.5, "saida": 25 },
+    "claude-opus-4-8": { "nome": "Claude Opus 4.8", "entrada": 5, "cache5m": 6.25, "cache1h": 10, "leitura": 0.5, "saida": 25 },
+    "claude-opus-4-7": { "nome": "Claude Opus 4.7", "entrada": 5, "cache5m": 6.25, "cache1h": 10, "leitura": 0.5, "saida": 25 },
+    "claude-opus-4-6": { "nome": "Claude Opus 4.6", "entrada": 5, "cache5m": 6.25, "cache1h": 10, "leitura": 0.5, "saida": 25 },
+    "claude-opus-4-5": { "nome": "Claude Opus 4.5", "entrada": 5, "cache5m": 6.25, "cache1h": 10, "leitura": 0.5, "saida": 25 },
+    "claude-opus-4-1": { "nome": "Claude Opus 4.1", "entrada": 15, "cache5m": 18.75, "cache1h": 30, "leitura": 1.5, "saida": 75 },
+    "claude-opus-4": { "nome": "Claude Opus 4", "entrada": 15, "cache5m": 18.75, "cache1h": 30, "leitura": 1.5, "saida": 75 },
+    "claude-sonnet-5-5": { "nome": "Claude Sonnet 5.5", "entrada": 2, "cache5m": 2.5, "cache1h": 4, "leitura": 0.1, "saida": 10 },
+    "claude-sonnet-5": { "nome": "Claude Sonnet 5", "entrada": 2, "cache5m": 2.5, "cache1h": 4, "leitura": 0.2, "saida": 10 },
+    "claude-sonnet-4-6": { "nome": "Claude Sonnet 4.6", "entrada": 3, "cache5m": 3.75, "cache1h": 6, "leitura": 0.3, "saida": 15 },
+    "claude-sonnet-4-5": { "nome": "Claude Sonnet 4.5", "entrada": 3, "cache5m": 3.75, "cache1h": 6, "leitura": 0.3, "saida": 15 },
+    "claude-sonnet-4": { "nome": "Claude Sonnet 4", "entrada": 3, "cache5m": 3.75, "cache1h": 6, "leitura": 0.3, "saida": 15 },
+    "claude-haiku-5-5": { "nome": "Claude Haiku 5.5 (até 100 000 tokens de prompt)", "entrada": 0.1, "cache5m": 0.125, "cache1h": 0.2, "leitura": 0.01, "saida": 0.5 },
+    "claude-haiku-5-5#longo": { "nome": "Claude Haiku 5.5 (mais de 100 000 tokens de prompt)", "entrada": 0.5, "cache5m": 0.625, "cache1h": 1, "leitura": 0.05, "saida": 2.5 },
+    "claude-haiku-4-5": { "nome": "Claude Haiku 4.5", "entrada": 1, "cache5m": 1.25, "cache1h": 2, "leitura": 0.1, "saida": 5 },
+    "claude-3-5-haiku": { "nome": "Claude Haiku 3.5", "entrada": 0.8, "cache5m": 1, "cache1h": 1.6, "leitura": 0.08, "saida": 4 }
+  },
+  "rapido": {
+    "claude-opus-5-5": { "entrada": 8, "saida": 40 },
+    "claude-opus-5": { "entrada": 10, "saida": 50 },
+    "claude-opus-4-8": { "entrada": 10, "saida": 50 }
+  }
+}

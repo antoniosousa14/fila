@@ -1,0 +1,38 @@
+{
+  "lidoEm": "2026-11-03",
+  "regraOficial": false,
+  "resumo": "A Anthropic tirou a redução de limites em hora de ponta do Claude Code nos planos Pro e Max a 6 de maio de 2026, e a página oficial não diz que horas eram.",
+  "fontes": [
+    {
+      "url": "https://www.anthropic.com/news/higher-limits-spacex",
+      "titulo": "Higher usage limits and a SpaceX compute deal (Anthropic)",
+      "oficial": true,
+      "data": "2026-05-06",
+      "diz": "Tira «the peak hours limit reduction on Claude Code» nas contas Pro e Max e duplica os limites de 5 h do Claude Code. Não diz que horas eram as de ponta."
+    },
+    {
+      "url": "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+      "titulo": "How do usage and length limits work? (centro de ajuda)",
+      "oficial": true,
+      "data": "2026-11-03",
+      "diz": "Limite de sessão de 5 h e limites semanais; podem aplicar-se limites adicionais para gerir a capacidade. Não define horas de ponta."
+    },
+    {
+      "url": "https://www.techradar.com/ai-platforms-assistants/claude/claude-is-limiting-usage-more-aggressively-during-peak-hours-heres-what-changed",
+      "titulo": "TechRadar, sobre o anúncio de 26 de março de 2026",
+      "oficial": false,
+      "data": "2026-03-26",
+      "diz": "Cita o anúncio: os limites de 5 h do Free, Pro e Max eram ajustados em hora de ponta, nos dias úteis das 5 h às 11 h PT (13 h–19 h GMT); os semanais não mudavam."
+    }
+  ],
+  "janela": {
+    "fuso": "America/Los_Angeles",
+    "dias": [1, 2, 3, 4, 5],
+    "inicio": 5,
+    "fim": 11,
+    "oficial": false,
+    "desde": "2026-03-26",
+    "ate": "2026-05-06",
+    "nota": "A janela que vigorou de março a maio de 2026, citada por terceiros (não está na página oficial). Serve só para comparar o teu uso dentro e fora dela."
+  }
+}

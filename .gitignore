@@ -1,0 +1,8 @@
+mod/.claude-plugin/types/
+.claude/worktrees/
+/dados
+
+# app nativa (Fila.exe): resultados da compilação
+/app/bin/
+/app/obj/
+/app/publish/

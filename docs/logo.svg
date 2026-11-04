@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Fila">
+  <title>Fila</title>
+  <rect width="64" height="64" rx="14" fill="#141414"/>
+  <g transform="translate(16 16) scale(1)">
+    <path d="M5 7h14.5l-2.2 4.6H5z" fill="#ededeb"/>
+    <path d="M5 14.2h10.6l-2.2 4.6H5z" fill="#ededeb" opacity=".6"/>
+    <path d="M5 21.4h6.2L9 26H5z" fill="#ededeb" opacity=".32"/>
+    <path d="M22.4 7H27l-2.2 4.6h-4.6z" fill="#ff7a1a"/>
+  </g>
+</svg>

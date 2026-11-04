@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-PT" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fila · gestor de chats</title>
+<link rel="icon" href="/web/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/web/estilo.css">
+<script src="/web/app.js" defer></script>
+</head>
+<body>
+<div class="app fechado" id="app">
+  <aside class="side">
+    <div class="puxador" id="puxador" role="separator" aria-orientation="vertical" aria-label="Largura da barra lateral" title="Arrasta para alargar · duplo clique repõe"></div>
+    <div class="marca">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 7h14.5l-2.2 4.6H5z" fill="currentColor"/><path d="M5 14.2h10.6l-2.2 4.6H5z" fill="currentColor" opacity=".6"/><path d="M5 21.4h6.2L9 26H5z" fill="currentColor" opacity=".32"/><path d="M22.4 7H27l-2.2 4.6h-4.6z" fill="var(--sinal)"/></svg>
+      <b>fila</b><span class="rot">v1.0</span>
+    </div>
+    <button class="procura" type="button" data-acao="paleta" title="Procurar chats, grupos e ações (Ctrl+K)">Procurar chats<kbd>CTRL K</kbd></button>
+    <nav class="nav">
+      <button class="it on" type="button" data-ir="topo" id="ir-painel"><span class="glifo">▤</span>Painel</button>
+      <button class="it" type="button" data-ir="sec-espera"><span class="sinal-pt" style="margin:0 4px"></span>À tua espera<span class="n sinal" id="n-espera">00</span></button>
+      <button class="it" type="button" data-ir="sec-trabalho"><span class="glifo">◌</span>A trabalhar<span class="n" id="n-trabalho">00</span></button>
+      <button class="it" type="button" data-ir="sec-recentes"><span class="glifo">↺</span>Recentes<span class="n" id="n-recentes">00</span></button>
+      <button class="it" type="button" data-vista="consumo" id="ir-consumo"><span class="glifo">$</span>Consumo<span class="n" id="n-consumo">—</span></button>
+      <div class="gr"><span class="rot">Grupos do Claude</span><button type="button" id="nova-pasta" data-acao="nova-pasta" title="Nova pasta para juntar grupos" aria-label="Nova pasta">+</button></div>
+      <div id="arvore"></div>
+    </nav>
+    <div class="medidor" id="medidor"></div>
+  </aside>
+
+  <main class="centro">
+    <header class="cab">
+      <div><h1 id="titulo">Painel</h1><div class="data rot" id="data">—</div></div>
+      <span class="esp"></span>
+      <button class="btn q" id="tema" type="button" title="Tema">◐</button>
+      <button class="btn" type="button" id="orquestrador" data-acao="abrir" disabled title="Abrir o chat orquestrador (O)">Orquestrador<kbd>O</kbd></button>
+      <button class="btn cheio" type="button" data-acao="novo-chat" title="Abrir um chat novo numa pasta (N)">Novo chat<kbd>N</kbd></button>
+    </header>
+    <div class="corpo" id="corpo">
+      <div class="caido" id="caido" hidden>O gestor não está a correr. A barra continua a funcionar sozinha; volta a tentar a cada 3 s.</div>
+      <div id="painel">
+      <div class="faixa" id="faixa"></div>
+      <button class="linha-consumo" type="button" id="linha-consumo" data-vista="consumo" title="Abrir a aba Consumo"></button>
+
+      <section class="sec" id="sec-espera">
+        <div class="sec-cab"><h2>À tua espera</h2><span class="rot">ordem da IA · importância, espera, desbloqueio</span></div>
+        <div class="cab-quadro"><span class="rot">Nº</span><span class="rot">Chat</span><span class="rot">Precisa de ti</span><span class="rot">Imp.</span><span class="rot">Espera</span></div>
+        <div class="quadro" id="espera"></div>
+      </section>
+
+      <section class="sec" id="sec-trabalho">
+        <div class="sec-cab"><h2>A trabalhar</h2><span class="rot" id="r-trabalho">00</span></div>
+        <div class="quadro" id="trabalho"></div>
+      </section>
+
+      <section class="sec" id="sec-recentes">
+        <div class="sec-cab"><h2>Recentes</h2><span class="rot nota">pela última mensagem</span><button class="mais rot" type="button" id="r-recentes">00</button></div>
+        <div id="recentes-ctrl"></div>
+        <div class="cab-rec"><span></span><span class="rot">Chat</span><span class="rot">Estado · precisa de ti</span><span class="rot">Há</span><span></span></div>
+        <div class="quadro" id="recentes"></div>
+      </section>
+
+      <section class="sec" id="sec-mensagens" hidden>
+        <div class="sec-cab"><h2>Mensagens</h2><span class="rot nota">últimos 7 dias · entregues pelo orquestrador</span><button class="mais rot" type="button" data-acao="nova-mensagem">+ mensagem</button></div>
+        <div class="quadro" id="mensagens"></div>
+      </section>
+      </div>
+      <div id="vista-seccao" hidden></div>
+      <div id="vista-consumo" hidden></div>
+    </div>
+  </main>
+
+  <aside class="det" id="ficha" aria-live="polite"></aside>
+</div>
+<div class="veu" id="veu" hidden><div class="dialogo" id="dialogo" role="dialog" aria-modal="true" aria-labelledby="dialogo-titulo"></div></div>
+<div class="aviso-t" id="aviso" role="status" hidden></div>
+</body>
+</html>
