@@ -98,6 +98,7 @@ namespace Fila
         {
             Registo.Info("a arrancar (versão " + typeof(Aplicacao).Assembly.GetName().Version + ", guardião: "
                 + (Environment.GetEnvironmentVariable("FILA_GUARDIAO") == "1" ? "sim" : "não") + ")");
+            Arranque.Migrar();
             wpf = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
             ui = wpf.Dispatcher;
             Excecoes.Interface(wpf, ContarErroUi);

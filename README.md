@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img alt="Versão 1.0.1" src="https://img.shields.io/badge/release-1.0.1-ff7a1a">
+  <img alt="Versão 1.0.2" src="https://img.shields.io/badge/release-1.0.2-ff7a1a">
   <img alt="Windows 11" src="https://img.shields.io/badge/Windows-11-0078d4">
   <img alt=".NET 9" src="https://img.shields.io/badge/.NET-9-512bd4">
   <img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-339933">
@@ -144,10 +144,10 @@ flowchart LR
 
 ## Instalação
 
-1. **Descarrega** o `Fila-1.0.1-win-x64.zip` na página de [Releases](../../releases) e extrai-o para uma pasta
+1. **Descarrega** o `Fila-1.0.2-win-x64.zip` na página de [Releases](../../releases) e extrai-o para uma pasta
    que vá ficar, por exemplo `C:\Fila`. O mod é lido dessa pasta, por isso não a apagues nem mudes depois.
    > A `Fila.exe` não está assinada: o Windows pode avisar que não a reconhece. Antes de extrair, desbloqueia o
-   > zip (`Unblock-File .\Fila-1.0.1-win-x64.zip`) ou, no aviso, escolhe *Mais informações → Executar mesmo assim*.
+   > zip (`Unblock-File .\Fila-1.0.2-win-x64.zip`) ou, no aviso, escolhe *Mais informações → Executar mesmo assim*.
 
 2. **Liga o mod ao Claude Code.** Em `~/.claude/settings.json` (guarda antes uma cópia), junta ao bloco `env`:
 
@@ -260,4 +260,4 @@ vê o [`SECURITY.md`](SECURITY.md). Só o dono do projeto tem escrita no `master
 [MIT](LICENSE) © 2026 António Sousa. A `Fila.exe` leva consigo o *Microsoft Edge WebView2 SDK*
 (`Microsoft.Web.WebView2`), que tem a sua própria licença.
 
-Versão **1.0.1**.
+Versão **1.0.2**.
