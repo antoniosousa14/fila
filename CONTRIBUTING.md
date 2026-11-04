@@ -6,8 +6,7 @@ Obrigado por quereres ajudar. A Fila é pequena e tem um dono que revê tudo: **
 ## Antes de começar
 
 - Para um erro ou uma ideia, abre um *issue* primeiro, sobretudo se for uma mudança grande. Poupa trabalho a todos.
-- Lê o [README](README.md), a [referência técnica](docs/referencia.md) e o [`AGENTS.md`](AGENTS.md): têm as peças,
-  as decisões de desenho e as armadilhas que não se descobrem a ler o código.
+- Lê o [README](README.md) e a [referência técnica](docs/referencia.md): têm as peças e como se ligam.
 
 ## Fazer uma alteração
 

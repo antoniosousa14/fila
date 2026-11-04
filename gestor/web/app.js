@@ -755,7 +755,7 @@ function htmlVistaSeccao(e, n) {
     ${ePasta ? projetosDaPasta(e, n) : pontoDeSituacao(e, n)}
     ${ePasta ? `<section class="sec"><div class="sec-cab"><h2>Dentro desta pasta</h2><button class="mais rot" type="button" data-acao="nova-subpasta" data-id="${esc(n.id)}">+ pasta</button></div><div class="fichas-sec">${filhas}</div></section>` : ''}
     <section class="sec">
-      <div class="sec-cab"><h2>Chats</h2><span class="rot nota">pela última mensagem</span>${chats.length ? `<button class="mais rot" type="button" data-acao="mensagem-seccao" data-id="${esc(n.id)}">mensagem a todos</button>` : ''}</div>
+      <div class="sec-cab"><h2>Chats</h2><span class="rot nota">pela última mensagem</span></div>
       <div class="cab-rec"><span></span><span class="rot">Chat</span><span class="rot">Estado · precisa de ti</span><span class="rot">Há</span><span></span></div>
       <div class="quadro">${chats.length ? chats.map(r => htmlLinhaRec(e, r)).join('') : '<div class="vazio">Sem chats.</div>'}</div>
     </section>`
@@ -832,7 +832,6 @@ function htmlFicha(e, f) {
       ${precisa ? `<div class="precisa">${esc(precisa)}</div>` : ''}
       <div class="acoes">
         <button class="btn cheio" type="button" data-acao="abrir" data-local="${esc(local)}"${local ? '' : ' disabled'}>Abrir na app</button>
-        <button class="btn" type="button" data-acao="mensagem" data-local="${esc(local)}"${local && local !== e.orquestrador ? '' : ' disabled title="Sem ligação a este chat"'}>Mensagem</button>
         <button class="btn" type="button" data-ver="${esc(grupo ?? '')}"${grupo ? '' : ' disabled'} title="Ver os chats do mesmo grupo">Ver grupo</button>
         <button class="btn" type="button" data-acao="dispensar"${espera ? '' : trabalho ? ' title="Esconde este chat de «a trabalhar» até ao próximo turno (para quando fica preso)"' : ' disabled title="Só os chats à tua espera ou a trabalhar se dispensam"'}>Dispensar</button>
       </div>
@@ -890,113 +889,8 @@ function dialogoApagarPasta(id) {
     <div class="botoes-d"><button class="btn" type="button" data-acao="fechar-dialogo" autofocus>Cancelar</button><button class="btn perigo" type="button" data-acao="confirmar-apagar-pasta" data-id="${esc(id)}">Apagar pasta</button></div>`)
 }
 
-// ——— mensagens a chats (fase 4): escolher, rever o texto exato e confirmar ———
-
+// Para filtrar sem olhar a acentos.
 const semAcentos = t => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-let mensagem = null // { escolhidos: Set de local_…, texto }
-
-function opcoesDeChats(escolhidos) {
-  const lista = (estado?.recentes ?? []).filter(c => c.local !== estado.orquestrador)
-  const ordem = [...lista.filter(c => escolhidos.has(c.local)), ...lista.filter(c => !escolhidos.has(c.local))]
-
-  return ordem.map(c => `
-    <label class="op marca opc" data-filtro="${esc(semAcentos(`${c.titulo} ${c.caminho} ${c.projeto}`))}">
-      <input type="checkbox" value="${esc(c.local)}"${escolhidos.has(c.local) ? ' checked' : ''}>
-      <span class="opc-t">${esc(c.titulo)}</span><span class="rot">${esc(onde(c))}</span>
-    </label>`).join('')
-}
-
-function contaMensagem() {
-  const n = mensagem.escolhidos.size
-  const t = $('msg-texto')?.value.trim().length ?? 0
-  $('msg-conta').textContent = `${n} chat${n === 1 ? '' : 's'} · ${t}/4000`
-  $('msg-rever').disabled = !n || !t || t > 4000
-}
-
-function dialogoMensagem(locais = []) {
-  if (!estado) return
-  mensagem = { escolhidos: new Set(locais.filter(l => l !== estado.orquestrador)), texto: mensagem?.texto ?? '' }
-  abrirDialogo(`
-    <h2 id="dialogo-titulo">Mensagem a chats</h2>
-    <p class="nota-d">Escolhe os chats e escreve o texto. Antes de sair mostro-te os destinatários e o texto exatos, e só envio quando confirmares.</p>
-    <input class="filtro" type="search" placeholder="Filtrar chats por título ou secção" aria-label="Filtrar chats" data-filtrar="opc">
-    <div class="ops ops-curtas" id="msg-ops">${opcoesDeChats(mensagem.escolhidos)}</div>
-    <textarea class="texto-d" id="msg-texto" rows="5" maxlength="4000" placeholder="O texto tem de se perceber sozinho: o chat que o recebe não conhece esta conversa." aria-label="Texto da mensagem">${esc(mensagem.texto)}</textarea>
-    ${estado.orquestrador ? '' : '<p class="nota-d alerta">Não há chat orquestrador (orquestrador.json): é ele que entrega as mensagens.</p>'}
-    <div class="botoes-d"><span class="conta-d mono" id="msg-conta"></span><button class="btn" type="button" data-acao="fechar-dialogo">Cancelar</button><button class="btn cheio" type="button" id="msg-rever" data-acao="rever-mensagem">Rever antes de enviar</button></div>`)
-  contaMensagem()
-  ;(mensagem.escolhidos.size ? $('msg-texto') : $('dialogo').querySelector('.filtro')).focus()
-}
-
-async function reverMensagem() {
-  mensagem.texto = $('msg-texto').value
-  try {
-    const r = await pedir('/api/mensagens/preparar', { para: [...mensagem.escolhidos], texto: mensagem.texto })
-    const lista = r.para.map(p => `<li><b>${esc(p.titulo)}</b><span class="rot">${esc(p.caminho || 'sem secção')}</span></li>`).join('')
-    abrirDialogo(`
-      <h2 id="dialogo-titulo">Enviar esta mensagem a ${r.para.length} chat${r.para.length === 1 ? '' : 's'}?</h2>
-      <div class="rot">Destinatários</div>
-      <ul class="conf-lista">${lista}</ul>
-      <div class="rot">Texto exato</div>
-      <pre class="conf-texto">${esc(r.texto)}</pre>
-      <p class="nota-d">Quem entrega é o chat Orquestrador, que tem de estar aberto na app. Um chat que não esteja a correr não recebe; a lista de mensagens diz o que aconteceu em cada um.</p>
-      <div class="botoes-d"><button class="btn" type="button" data-acao="voltar-mensagem">Voltar</button><button class="btn cheio" type="button" data-acao="confirmar-mensagem" data-id="${esc(r.id)}" autofocus>Enviar a ${r.para.length} chat${r.para.length === 1 ? '' : 's'}</button></div>`)
-  } catch (erro) {
-    avisar(`Não deu: ${erro.message}`)
-  }
-}
-
-async function confirmarMensagem(id) {
-  try {
-    await pedir('/api/mensagens/enviar', { id })
-    mensagem = null
-    fecharDialogo()
-    avisar('Mensagem entregue ao carteiro. Vê o resultado em Mensagens.')
-    await atualizar()
-    $('sec-mensagens')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  } catch (erro) {
-    avisar(`Não saiu: ${erro.message}`)
-  }
-}
-
-const ESTADO_MSG = { 'na-fila': 'na fila do carteiro', 'a-enviar': 'a enviar', expirado: 'expirou sem carteiro' }
-
-function resumoMensagem(m) {
-  if (m.estado !== 'feito') return ESTADO_MSG[m.estado] ?? m.estado
-  const ok = m.para.filter(p => p.entregue).length
-
-  return ok === m.para.length ? `entregue a ${ok === 1 ? '1 chat' : `todos (${ok})`}` : `entregue a ${ok} de ${m.para.length}`
-}
-
-function htmlMensagens(e) {
-  return e.mensagens.map(m => {
-    const falhou = m.estado === 'expirado' || (m.estado === 'feito' && m.para.some(p => !p.entregue))
-    const glifo = m.estado === 'feito' && !falhou ? '✓' : falhou ? '<span class="sinal-pt"></span>' : '◌'
-
-    return `
-    <div class="msg-l${falhou ? ' falhou' : ''}" role="button" tabindex="0" data-msg="${esc(m.id)}">
-      <span class="glifo">${glifo}</span>
-      <div class="c1"><div class="t" title="${esc(m.texto)}">${esc(m.texto)}</div><div class="s">para ${esc(m.para.map(p => p.titulo).join(', '))}</div></div>
-      <span class="estado-m">${esc(resumoMensagem(m))}</span>
-      <span class="q">${idade(e.geradoEm - m.em)}</span>
-    </div>`
-  }).join('')
-}
-
-function dialogoDetalheMensagem(id) {
-  const m = estado?.mensagens.find(x => x.id === id)
-  if (!m) return
-  const linhas = m.para.map(p => {
-    const estadoTxt = p.entregue === true ? 'entregue' : p.entregue === false ? `não entregue · ${p.motivo || 'sem motivo'}` : ESTADO_MSG[m.estado] ?? m.estado
-
-    return `<li><b>${esc(p.titulo)}</b><span class="${p.entregue === false ? 'falhou' : 'rot'}">${esc(estadoTxt)}</span></li>`
-  }).join('')
-  abrirDialogo(`
-    <h2 id="dialogo-titulo">Mensagem de ${esc(quando(m.em))}</h2>
-    <pre class="conf-texto">${esc(m.texto)}</pre>
-    <ul class="conf-lista">${linhas}</ul>
-    <div class="botoes-d"><button class="btn" type="button" data-acao="fechar-dialogo" autofocus>Fechar</button></div>`)
-}
 
 // ——— novo chat: abre o ecrã de chat novo da app numa pasta ———
 
@@ -1088,7 +982,6 @@ function acoesDaPaleta() {
   const lista = [
     { rotulo: 'Painel', sub: 'ir para o painel', fazer: () => { vista = { tipo: 'painel' }; desenhar(); $('corpo').scrollTo({ top: 0 }) } },
     { rotulo: 'Novo chat', sub: 'N', fazer: dialogoNovoChat },
-    { rotulo: 'Mensagem a chats…', sub: 'escolher, rever e confirmar', fazer: () => dialogoMensagem(selecionado && chatDe.has(selecionado) ? [selecionado] : []) },
     { rotulo: 'À tua espera', sub: `${e.numeros.espera} chats`, fazer: () => { vista = { tipo: 'painel' }; desenhar(); $('sec-espera').scrollIntoView({ block: 'start' }) } },
     { rotulo: 'Recentes', sub: `${e.recentes.length} chats`, fazer: () => { vista = { tipo: 'painel' }; recentesTodos = true; desenhar(); $('sec-recentes').scrollIntoView({ block: 'start' }) } },
     { rotulo: 'Consumo', sub: `tokens, custo na API, horas e limites${e.consumo?.semana ? ` · ${pct(e.consumo.semana.percent)} da semana` : ''}`, fazer: abrirConsumo },
@@ -1260,9 +1153,9 @@ function linhaTaxa(h) {
 // O formulário da subscrição (valor, moeda e taxa de câmbio); o resumo está em htmlDestaque.
 function htmlSubscricao(h) {
   return `<div class="sub-form">
-      <label for="sub-mensal"><b>Quanto pagas por mês pela subscrição?</b><small>O plano Max aparece na app; confirma o valor que pagas (com IVA). O custo na API está em dólares e converte-se com a taxa abaixo.</small></label>
+      <label for="sub-mensal"><b>Quanto pagas por mês pela subscrição?</b><small>A Fila não deteta o teu plano: escreve o valor que pagas (com IVA). O custo na API está em dólares e converte-se com a taxa abaixo.</small></label>
       <div class="sub-linha">
-        <input id="sub-mensal" class="filtro mono" type="number" min="0" max="100000" step="0.01" inputmode="decimal" value="${h.mensal ?? 110}" aria-label="Valor mensal">
+        <input id="sub-mensal" class="filtro mono" type="number" min="0" max="100000" step="0.01" inputmode="decimal" value="${h.mensal ?? ''}" placeholder="0,00" aria-label="Valor mensal">
         <select id="sub-moeda" class="filtro" aria-label="Moeda"><option value="EUR"${h.moeda !== 'USD' ? ' selected' : ''}>€ por mês</option><option value="USD"${h.moeda === 'USD' ? ' selected' : ''}>$ por mês</option></select>
         <label class="taxa-l">1 € = <input id="sub-taxa" class="filtro mono" type="number" min="0.2" max="5" step="0.0001" inputmode="decimal" value="${h.usdPorEur ?? ''}" placeholder="1,1179" aria-label="Dólares por euro"> USD</label>
         <button class="btn" type="button" data-acao="taxa-bce" title="Taxa de referência do dia do Banco Central Europeu">Taxa do BCE</button>
@@ -1634,8 +1527,6 @@ function desenhar() {
     if (!(aEscrever && document.activeElement.dataset.buscaNs === 'rec')) por('recentes-ctrl', htmlControlos('rec', e.recentes))
     por('recentes', htmlRecentes(e))
   }
-  por('mensagens', htmlMensagens(e))
-  $('sec-mensagens').hidden = !e.mensagens?.length
   desenharArvore()
   por('medidor', htmlMedidor(e))
   por('ficha', ficha ? htmlFicha(e, ficha) : '')
@@ -1805,15 +1696,6 @@ async function agir(botao) {
   }
   if (acao === 'mostrar-grupo') return organizar({ acao: 'mostrar-grupo', grupo: id })
   if (acao === 'ver-escondidos') { verEscondidos = !verEscondidos; return desenharArvore(true) }
-  if (acao === 'mensagem') return dialogoMensagem([botao.dataset.local])
-  if (acao === 'nova-mensagem') return dialogoMensagem([])
-  if (acao === 'mensagem-seccao') {
-    const no = estado && acharNo(estado.arvore, id)
-    return no && dialogoMensagem(chatsDaSubarvore(no))
-  }
-  if (acao === 'rever-mensagem') return reverMensagem()
-  if (acao === 'voltar-mensagem') return dialogoMensagem([...(mensagem?.escolhidos ?? [])])
-  if (acao === 'confirmar-mensagem') return confirmarMensagem(botao.dataset.id)
   if (acao === 'novo-chat') return dialogoNovoChat()
   if (acao === 'nc-voltar') return passoTopicoDoChat()
   if (acao === 'criar-chat') return criarChat()
@@ -1838,11 +1720,10 @@ async function agir(botao) {
 document.addEventListener('click', ev => {
   if (menu && !ev.target.closest('.menu, [data-menu]')) { menu = null; desenharArvore(true) }
   if (ev.target === $('veu')) return fecharDialogo()
-  const alvo = ev.target.closest('[data-acao], [data-sel], [data-alternar], [data-ver], [data-menu], [data-mover-para], [data-dias], [data-dias-hist], [data-aba-consumo], [data-rep-consumo], [data-grupo-consumo], [data-vista], [data-msg], [data-pasta], [data-nc-no], [data-pal], [data-ir]')
+  const alvo = ev.target.closest('[data-acao], [data-sel], [data-alternar], [data-ver], [data-menu], [data-mover-para], [data-dias], [data-dias-hist], [data-aba-consumo], [data-rep-consumo], [data-grupo-consumo], [data-vista], [data-pasta], [data-nc-no], [data-pal], [data-ir]')
   if (!alvo || alvo.disabled) return
   if (alvo.dataset.acao) return agir(alvo)
   if (alvo.dataset.pal) return correrPaleta(Number(alvo.dataset.pal), ev.ctrlKey)
-  if (alvo.dataset.msg) return dialogoDetalheMensagem(alvo.dataset.msg)
   if ('ncNo' in alvo.dataset) return passoPastaDoChat(alvo.dataset.ncNo || null)
   if (alvo.dataset.pasta) {
     $('nc-pasta').value = alvo.dataset.pasta
@@ -1904,7 +1785,6 @@ document.addEventListener('input', ev => {
     ctrl[nsBusca].busca = ev.target.value
     return redesenharControlos(nsBusca, ev.target.selectionStart ?? ev.target.value.length)
   }
-  if (ev.target.id === 'msg-texto') return contaMensagem()
   if (ev.target.id === 'pal-in') {
     paleta.itens = itensDaPaleta(ev.target.value)
     paleta.ativo = 0
@@ -1923,11 +1803,6 @@ document.addEventListener('change', ev => {
     guardarControlos()
     return redesenharControlos(nsOrdem)
   }
-  const caixa = ev.target.closest?.('#msg-ops input[type="checkbox"]')
-  if (!caixa || !mensagem) return
-  if (caixa.checked) mensagem.escolhidos.add(caixa.value)
-  else mensagem.escolhidos.delete(caixa.value)
-  contaMensagem()
 })
 
 document.addEventListener('keydown', ev => {

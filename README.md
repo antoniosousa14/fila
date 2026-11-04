@@ -5,151 +5,163 @@
 <h1 align="center">Fila</h1>
 
 <p align="center">
-  <b>Deixa de andar de chat em chat.</b><br>
-  Vê, num só sítio, o que está à tua espera, o que está a trabalhar e o que ficou esquecido nos teus chats do Claude Code.
+  <b>Stop hopping from chat to chat.</b><br>
+  See, in one place, what is waiting for you, what is working and which projects you are letting slip in your Claude Code chats.
 </p>
 
 <p align="center">
-  <img alt="Versão 1.0.2" src="https://img.shields.io/badge/release-1.0.2-ff7a1a">
+  <img alt="Version 1.0.3" src="https://img.shields.io/badge/release-1.0.3-ff7a1a">
   <img alt="Windows 11" src="https://img.shields.io/badge/Windows-11-0078d4">
   <img alt=".NET 9" src="https://img.shields.io/badge/.NET-9-512bd4">
   <img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-339933">
-  <img alt="Português de Portugal" src="https://img.shields.io/badge/idioma-pt--PT-444">
-  <img alt="Licença MIT" src="https://img.shields.io/badge/licen%C3%A7a-MIT-2ea44f">
+  <img alt="Interface in European Portuguese" src="https://img.shields.io/badge/interface-pt--PT-444">
+  <img alt="MIT license" src="https://img.shields.io/badge/license-MIT-2ea44f">
 </p>
+
+> **Language:** the app's interface and the technical reference ([`docs/referencia.md`](docs/referencia.md)) are in
+> European Portuguese. This README is in English, and it gives the Portuguese name of every button and tab you
+> will see (for example **Dispensar** = dismiss).
 
 ---
 
-## Porquê
+## Why
 
-Quando trabalhas com cinco ou seis chats do Claude Code ao mesmo tempo, o difícil já não é pedir: é saber **a
-quem responder primeiro**. Cada chat que acaba fica calado à tua espera, e tu andas de um em um a ver qual era.
+When you work with five or six Claude Code chats at the same time, the hard part is no longer asking: it is
+knowing **whom to answer first**. Every chat that finishes sits there quietly waiting for you, and you go
+through them one by one to find out which was which.
 
-A Fila responde a três perguntas, sem abrires nenhum chat:
+Fila answers three questions without opening a single chat:
 
-1. **O que está à minha espera, e o que é mais urgente?**
-2. **O que está a trabalhar, e em que ponto vai?**
-3. **Que projetos estou a deixar esquecer?**
+1. **What is waiting for me, and what is most urgent?**
+2. **What is working, and how far along is it?**
+3. **Which projects am I letting slip?**
 
-## O que traz
+## What you get
 
 | | |
 |---|---|
-| **Fila ordenada por IA** | No fim de cada turno, um modelo pequeno lê o pedido e a resposta e classifica o chat: importância, tipo (aprovação, decisão, revisão ou informação), esforço e se desbloqueia o chat. Escreve ainda um cartão com o que pediste, o que foi feito e o que precisa de ti. A fila ordena-se por isto, não pela ordem de chegada. |
-| **Pílula** | Uma pílula discreta no canto do ecrã: quantos chats esperam e quantos trabalham. Com o rato em cima abre um quadro com a fila e o progresso de cada trabalho. Nunca rouba o foco ao Claude. |
-| **Gestor de chats** | Uma janela própria com o Painel (à tua espera, a trabalhar, recentes), os **Projetos**, o **Consumo** e a árvore dos grupos do Claude. |
-| **Tecla de menu** | Um toque abre e fecha o gestor; segurar cerca de 1 s mostra ou esconde a pílula. Sem rato, sem procurar janelas. |
-| **Feita para não morrer** | Um guardião arranca a app de novo se ela cair, vigia o servidor do gestor e sobrevive a terminais fechados e a reinícios. |
+| **AI-ranked queue** | At the end of each turn, a small model reads the request and the reply and classifies the chat: importance, type (approval, decision, review or information), effort and whether it unblocks the chat. It also writes a card with what you asked, what was done and what needs you. The queue is ordered by this, not by arrival time. |
+| **Pill** | A discreet pill in the corner of the screen: how many chats are waiting and how many are working. Hover over it to open a board with the queue and the progress of each job. It never steals focus from Claude. |
+| **Chat manager** | A window of its own with the **Painel** (dashboard: waiting for you, working, recent), the **Projetos** (projects), the **Consumo** (usage) tab and the tree of your Claude groups. |
+| **Menu key** | The keyboard's context-menu key (`VK_APPS`): one tap opens and closes the manager; holding it for about 1 s shows or hides the pill. No mouse, no hunting for windows. |
+| **Built not to die** | A guardian restarts the app if it crashes, watches the manager's server and survives closed terminals and reboots. |
 
-### Projetos: para nada ficar esquecido
+### Projects: so nothing gets forgotten
 
-Ao abrir uma pasta, o gestor mostra um quadrado por projeto, só com texto: o que ficou **feito**, o que **falta**
-(por prioridade) e o **ritmo**: ativo hoje, a arrefecer, parado, ou **esquecido** (parado há 7 dias ou mais e com
-coisas por fazer). Filtros, ordenação e pesquisa em cima; o detalhe só abre ao carregar no quadrado. O **×**
-dispensa um projeto até haver novidades nele.
+When you open a folder, the manager shows one tile per project, text only: what is **done**, what is **left**
+(by priority) and the **pace**: active today, cooling down, stopped, or **forgotten** (stopped for 7 days or
+more and with things still to do). Filters, sorting and search sit on top; the detail opens only when you
+click a tile. The **×** dismisses a project until there is news in it.
 
-### Consumo: quanto estás mesmo a usar
+### Usage: how much you are really using
 
-Histórico de tokens reconstruído a partir das tuas transcrições, o custo equivalente na API em dólares e em
-euros, as horas de uso ativo e passivo, a poupança face à subscrição, a semana e a sessão de 5 h com a
-previsão de quando acabam ao ritmo atual, e as horas de ponta.
+A token history rebuilt from your transcripts, the equivalent API cost in dollars and euros, active and
+passive hours of use, the week and the 5-hour session with a forecast of when they run out at the current
+pace, and peak hours.
 
-### Dispensar sem culpa
+- **Limits** (week and 5-hour session) are read from the Claude app itself, for the account you are signed
+  in with, so they work whatever plan you have.
+- **Savings versus your subscription:** Fila does not detect your plan. You type what you pay per month in
+  the Consumo tab, and the savings are the API-equivalent cost minus that amount.
 
-O **Dispensar** esconde um chat até ao turno seguinte; chats arquivados na app nunca contam. A fila mostra só o
-que precisa de ti.
+### Dismiss without guilt
 
-## Capturas
+**Dispensar** (dismiss) hides a chat until its next turn; chats archived in the app never count. The queue
+shows only what needs you.
 
-Todas as imagens usam dados de demonstração, 100 % fictícios (os projetos, os chats e os valores são inventados),
-por isso não mostram trabalho real. Como se geram está na [referência técnica](docs/referencia.md#dados-de-demonstração-e-capturas).
+## Screenshots
 
-### Painel
+Every image uses 100 % fictional demo data (the projects, chats and figures are invented), so none of them
+shows real work. How they are generated is in the [technical reference](docs/referencia.md#dados-de-demonstração-e-capturas).
 
-O que está à tua espera, por ordem da IA, e o que está a trabalhar, com o progresso de cada chat.
+### Dashboard
 
-![Painel do gestor: quatro chats à espera, por importância, e três a trabalhar com a barra de progresso](docs/capturas/painel.png)
+What is waiting for you, in the AI's order, and what is working, with the progress of each chat.
 
-### Ficha de um chat
+![Manager dashboard: four chats waiting, by importance, and three working with a progress bar](docs/capturas/painel.png)
 
-Ao carregar num chat abre-se a ficha: o que pediste, o que foi feito, o que precisa de ti, a importância, o tipo
-de espera e a linha do tempo.
+### A chat's card
 
-![Ficha de um chat à espera de aprovação, com o cartão da IA, a importância e a linha do tempo](docs/capturas/ficha.png)
+Click a chat to open its card: what you asked, what was done, what needs you, the importance, the type of
+wait and the timeline.
 
-### Projetos
+![Card of a chat waiting for approval, with the AI card, the importance and the timeline](docs/capturas/ficha.png)
 
-Ao abrir uma pasta, um quadrado por projeto: o que ficou feito, o que falta (por prioridade) e o ritmo. O Blog Maré
-está parado há 9 dias e com coisas por fazer, por isso aparece como esquecido.
+### Projects
 
-![Quadrados dos projetos de uma pasta, com o feito, o que falta e o ritmo de cada um](docs/capturas/projetos.png)
+When you open a folder, one tile per project: what is done, what is left (by priority) and the pace. The
+Blog Maré project has been stopped for 9 days with things still to do, so it shows as forgotten.
 
-Carregar num quadrado abre o detalhe: tudo o que falta por prioridade, o que ficou feito, o ritmo dos últimos dias e
-os chats do grupo.
+![Project tiles of a folder, with what is done, what is left and the pace of each](docs/capturas/projetos.png)
 
-![Detalhe de um projeto esquecido, com o que falta por prioridade e o que ficou feito](docs/capturas/projeto-detalhe.png)
+Click a tile to open the detail: everything that is left by priority, what is done, the pace over the last
+days and the chats of the group.
 
-### Consumo
+![Detail of a forgotten project, with what is left by priority and what is done](docs/capturas/projeto-detalhe.png)
 
-Custo equivalente na API face à subscrição, horas de uso ativo e passivo, custo por dia e a previsão dos limites.
+### Usage
 
-![Aba Consumo: poupança face à subscrição, custo e horas por dia](docs/capturas/consumo.png)
+API-equivalent cost against the subscription, active and passive hours, cost per day and the limit forecast.
 
-### Pílula e quadro
+![Consumo tab: savings against the subscription, cost and hours per day](docs/capturas/consumo.png)
 
-A pílula fica no canto do ecrã; com o rato em cima abre o quadro com a fila e o progresso de cada trabalho.
+### Pill and board
+
+The pill sits in the corner of the screen; hover over it to open the board with the queue and the progress of
+each job.
 
 <p>
-  <img src="docs/capturas/pilula.png" width="223" alt="Pílula com 4 chats à espera e 3 a trabalhar">
+  <img src="docs/capturas/pilula.png" width="223" alt="Pill with 4 chats waiting and 3 working">
   &nbsp;&nbsp;
-  <img src="docs/capturas/quadro.png" width="478" alt="Quadro da pílula: os chats à espera, os que trabalham com o progresso e o botão Próximo">
+  <img src="docs/capturas/quadro.png" width="478" alt="The pill's board: the chats waiting, the ones working with their progress and the Next button">
 </p>
 
-## Como funciona
+## How it works
 
 ```mermaid
 flowchart LR
-  subgraph claude["App Claude · vários chats"]
-    mod["Mod (em cada chat)"]
+  subgraph claude["Claude app · several chats"]
+    mod["Mod (in every chat)"]
   end
   dados[("~/.claude/fila-atencao")]
-  fonte["Sessões, grupos e transcrições do Claude\n(só leitura)"]
-  gestor["Gestor · Node\n127.0.0.1:4730"]
-  app["Fila.exe · guardião"]
+  fonte["Claude sessions, groups and transcripts\n(read-only)"]
+  gestor["Manager · Node\n127.0.0.1:4730"]
+  app["Fila.exe · guardian"]
 
-  mod -- "fila, situação, consumo" --> dados
-  gestor -- lê --> dados
-  gestor -- lê --> fonte
-  app -- vigia --> gestor
-  app --> pilula["Pílula e quadro"]
-  app --> janela["Janela do gestor · WebView2"]
-  pilula -- lê --> dados
+  mod -- "queue, status, usage" --> dados
+  gestor -- reads --> dados
+  gestor -- reads --> fonte
+  app -- watches --> gestor
+  app --> pilula["Pill and board"]
+  app --> janela["Manager window · WebView2"]
+  pilula -- reads --> dados
   janela --> gestor
 ```
 
-- O **mod** corre dentro de cada chat do Claude Code e escreve o estado em `%USERPROFILE%\.claude\fila-atencao\`.
-- O **gestor** é um servidor local (Node, sem dependências) que junta esse estado com as sessões da app do
-  Claude, que **só lê**.
-- A **`Fila.exe`** mostra a pílula, abre o gestor numa janela e vigia tudo.
+- The **mod** runs inside every Claude Code chat and writes its state to `%USERPROFILE%\.claude\fila-atencao\`.
+- The **manager** is a local server (Node, no dependencies) that joins that state with the Claude app's
+  sessions, which it **only reads**.
+- **`Fila.exe`** shows the pill, opens the manager in a window and watches over everything.
 
-## Requisitos
+## Requirements
 
 | | |
 |---|---|
-| Sistema | Windows 11 (64 bits) |
-| App do Claude | App Claude para Windows com o separador **Code** (testado com o Claude Code 2.1.309) |
+| System | Windows 11 (64-bit) |
+| Claude app | Claude app for Windows with the **Code** tab (tested with Claude Code 2.1.309) |
 | .NET | [.NET 9 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/9.0) (x64) |
-| Node.js | [Node.js](https://nodejs.org/) no `PATH` (testado com a versão 24) |
-| WebView2 | O runtime já vem com o Windows 11 |
+| Node.js | [Node.js](https://nodejs.org/) on the `PATH` (tested with version 24) |
+| WebView2 | The runtime already ships with Windows 11 |
 
-## Instalação
+## Installation
 
-1. **Descarrega** o `Fila-1.0.2-win-x64.zip` na página de [Releases](../../releases) e extrai-o para uma pasta
-   que vá ficar, por exemplo `C:\Fila`. O mod é lido dessa pasta, por isso não a apagues nem mudes depois.
-   > A `Fila.exe` não está assinada: o Windows pode avisar que não a reconhece. Antes de extrair, desbloqueia o
-   > zip (`Unblock-File .\Fila-1.0.2-win-x64.zip`) ou, no aviso, escolhe *Mais informações → Executar mesmo assim*.
+1. **Download** `Fila-1.0.3-win-x64.zip` from the [Releases](../../releases) page and extract it to a folder
+   that will stay put, for example `C:\Fila`. The mod is loaded from that folder, so do not delete or move it
+   afterwards.
+   > `Fila.exe` is not signed: Windows may warn that it does not recognise it. Before extracting, unblock the
+   > zip (`Unblock-File .\Fila-1.0.3-win-x64.zip`) or, in the warning, choose *More info → Run anyway*.
 
-2. **Liga o mod ao Claude Code.** Em `~/.claude/settings.json` (guarda antes uma cópia), junta ao bloco `env`:
+2. **Connect the mod to Claude Code.** In `~/.claude/settings.json` (make a copy first), add to the `env` block:
 
    ```json
    {
@@ -160,104 +172,105 @@ flowchart LR
    }
    ```
 
-   `CLAUDE_CODE_PLUGIN_DIR_WATCH=1` recarrega o mod sempre que o código muda.
+   `CLAUDE_CODE_PLUGIN_DIR_WATCH=1` reloads the mod whenever its code changes.
 
-3. **Arranca a Fila:** corre `C:\Fila\Fila.exe`. A pílula aparece no canto inferior direito.
+3. **Start Fila:** run `C:\Fila\Fila.exe`. The pill appears in the bottom-right corner.
 
-4. **Arranque com o Windows** (opcional): `C:\Fila\Fila.exe --arranque on`, ou liga-o no menu do ícone da bandeja.
+4. **Start with Windows** (optional): `C:\Fila\Fila.exe --arranque on`, or switch it on in the tray icon's menu.
 
-5. **Abre um chat novo** no Claude Code. O mod carrega nos chats que abrires a partir daqui; os que já estavam
-   abertos ficam de fora. Quando esse chat acabar o primeiro turno, aparece na fila.
+5. **Open a new chat** in Claude Code. The mod only loads in chats you open from here on; the ones that were
+   already open are left out. When that chat finishes its first turn, it shows up in the queue.
 
-6. **Orquestrador** (opcional): um chat só para pontos de situação de todos os chats e para enviar mensagens,
-   sempre com a tua confirmação.
-   - Copia `C:\Fila\skills\orquestrar` para `~/.claude/skills/`.
-   - Abre um chat para ele e diz à Fila qual é: cria `%USERPROFILE%\.claude\fila-atencao\orquestrador.json` com
-     `{"local":"local_…"}`, onde `local_…` é o nome do ficheiro desse chat em
-     `%APPDATA%\Claude\claude-code-sessions\<conta>\<organização>\`. O orquestrador fica fora da fila.
+6. **Orchestrator** (optional): a chat just for status reports on all your chats and for sending messages,
+   always with your confirmation.
+   - Copy `C:\Fila\skills\orquestrar` to `~/.claude/skills/`.
+   - Open a chat for it and tell Fila which one it is: create `%USERPROFILE%\.claude\fila-atencao\orquestrador.json`
+     with `{"local":"local_…"}`, where `local_…` is the name of that chat's file in
+     `%APPDATA%\Claude\claude-code-sessions\<account>\<organisation>\`. The orchestrator stays out of the queue.
 
-## Uso diário
+## Daily use
 
-| Faz | Como |
+| You want to | How |
 |---|---|
-| Abrir ou fechar o gestor | Tecla de menu: um toque |
-| Mostrar ou esconder a pílula | Tecla de menu: segurar cerca de 1 s |
-| Ver a fila sem abrir nada | Rato em cima da pílula |
-| Procurar chats, grupos e ações | `Ctrl` `K` no gestor |
-| Novo chat numa pasta | `N` no gestor |
-| Abrir o chat orquestrador | `O` no gestor |
-| Fechar a ficha ou o diálogo | `Esc` |
-| Tirar um chat da fila | **Dispensar** na ficha do chat |
+| Open or close the manager | Menu key: one tap |
+| Show or hide the pill | Menu key: hold for about 1 s |
+| See the queue without opening anything | Hover over the pill |
+| Search chats, groups and actions | `Ctrl` `K` in the manager |
+| New chat in a folder | `N` in the manager |
+| Open the orchestrator chat | `O` in the manager |
+| Close the card or the dialog | `Esc` |
+| Take a chat out of the queue | **Dispensar** on the chat's card |
 
-> Sem tecla de menu no teu teclado? O ícone da bandeja faz o mesmo: um clique abre o gestor.
+> No menu key on your keyboard? The tray icon does the same: one click opens the manager.
 
-## Privacidade e segurança
+## Privacy and security
 
-- **Tudo local.** O servidor só escuta em `127.0.0.1` e os pedidos que alteram alguma coisa exigem uma origem local.
-- **Só lê os dados do Claude** (sessões, grupos, transcrições). Não altera chats, grupos nem sessões. As pastas
-  e as marcas que crias são só do gestor.
-- **Transcrições:** só contagens, horas e o fim do último pedido e resposta ficam à vista; nada sai da máquina.
-- **Segredos:** o `claude_desktop_config.json` só é lido para os grupos; os servidores MCP e as suas chaves
-  nunca chegam à API (há um teste para isso).
-- **Rede.** O gestor pede a taxa de câmbio ao BCE (`ecb.europa.eu`) para converter o custo para euros, e a página
-  do gestor carrega os tipos de letra do Fontshare e do Google Fonts. São pedidos de leitura: não levam dados
-  dos teus chats.
-- **A classificação usa a tua conta:** cada turno gasta uma pequena parte do teu limite com um modelo pequeno
-  do Claude (Haiku).
+- **Everything is local.** The server only listens on `127.0.0.1`, and requests that change anything require a
+  local origin.
+- **It only reads Claude's data** (sessions, groups, transcripts). It does not change chats, groups or
+  sessions. The folders and marks you create belong to the manager alone.
+- **Transcripts:** only counts, times and the end of the last request and reply are shown; nothing leaves
+  your machine.
+- **Secrets:** `claude_desktop_config.json` is read only for the groups; the MCP servers and their keys never
+  reach the API (there is a test for it).
+- **Network.** The manager asks the ECB (`ecb.europa.eu`) for the exchange rate to convert the cost to euros,
+  and the manager page loads its typefaces from Fontshare and Google Fonts. These are read-only requests:
+  they carry no data from your chats.
+- **The classification uses your account:** every turn spends a small part of your limit on a small Claude
+  model (Haiku).
 
-## Limitações conhecidas
+## Known limitations
 
-- Só Windows 11.
-- **O botão «Mensagem» do gestor ainda não entrega nada:** o modo automático do Claude recusa os envios que
-  partem de um mod. Para mandar mensagens a chats, pede-o ao orquestrador.
-- O **feito** e o que **falta** da IA só chegam a um chat no turno seguinte ao mod carregar; até lá o gestor usa
-  a lista de tarefas e o resumo da app.
-- Os chats abertos antes de uma atualização do mod mantêm o mod antigo até acabarem um turno.
-- Um chat fechado a meio de um turno pode continuar a aparecer «a trabalhar» (até 3 h); o **Dispensar** tira-o.
-- As horas de ponta não têm regra oficial em vigor: são uma estimativa com as tuas leituras.
-- A `Fila.exe` não está assinada.
+- Windows 11 only.
+- There is no button to send messages to chats from the manager: Claude's auto mode refuses sends that come
+  from a mod. To message a chat, ask the orchestrator.
+- The AI's **done** and **left** lists only reach a chat on the turn after the mod loads; until then the
+  manager uses the task list and the app's summary.
+- Chats opened before a mod update keep the old mod until they finish a turn.
+- A chat closed mid-turn can keep showing as "working" (for up to 3 h); **Dispensar** removes it.
+- Peak hours have no official rule in force: they are an estimate from your own readings.
+- `Fila.exe` is not signed.
 
-## Resolução de problemas
+## Troubleshooting
 
-| Sintoma | O que fazer |
+| Symptom | What to do |
 |---|---|
-| A pílula não aparece | Procura o ícone na bandeja; se não houver, corre `Fila.exe` e vê `%USERPROFILE%\.claude\fila-atencao\app.log`. |
-| O gestor abre vazio ou não abre | Confirma que o Node está instalado (`node --version`). No ícone da bandeja, escolhe *Reiniciar o servidor do gestor*; os erros ficam em `gestor-erros.log`. |
-| O Painel não mostra chats | O mod só carrega em chats **novos** depois de configurado o `settings.json`. Abre um chat novo e deixa-o acabar um turno. |
-| A porta 4730 está ocupada | O gestor usa a seguinte livre; a app lê-a de `gestor.json`. |
-| A tecla de menu não faz nada | Outro programa pode estar a usar o gancho do teclado; o ícone da bandeja abre o gestor na mesma. |
-| Um chat ficou «a trabalhar» para sempre | **Dispensar** na ficha do chat. |
+| The pill does not appear | Look for the icon in the tray; if it is not there, run `Fila.exe` and check `%USERPROFILE%\.claude\fila-atencao\app.log`. |
+| The manager opens empty or does not open | Check that Node is installed (`node --version`). In the tray icon, choose *Reiniciar o servidor do gestor* (restart the manager's server); errors go to `gestor-erros.log`. |
+| The dashboard shows no chats | The mod only loads in **new** chats once `settings.json` is set up. Open a new chat and let it finish a turn. |
+| Port 4730 is taken | The manager uses the next free one; the app reads it from `gestor.json`. |
+| The menu key does nothing | Another program may be using the keyboard hook; the tray icon still opens the manager. |
+| A chat stays "working" forever | **Dispensar** on the chat's card. |
 
-## Para quem desenvolve
+## For developers
 
-- [`docs/referencia.md`](docs/referencia.md): cada peça em pormenor, os dados em disco, a API do gestor, as
-  variáveis de ambiente e a linha de comandos.
-- [`AGENTS.md`](AGENTS.md): o estado do projeto, as decisões do dono e as armadilhas que não se descobrem a ler o código.
-- [`CONTRIBUTING.md`](CONTRIBUTING.md): como contribuir.
+- [`docs/referencia.md`](docs/referencia.md) (Portuguese): every part in detail, the data on disk, the manager's
+  API, the environment variables and the command line.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md): how to contribute.
 
 ```powershell
-node --test "gestor/test/*.test.mjs"                                          # testes do gestor
+node --test "gestor/test/*.test.mjs"                                          # manager tests
 $C = (Get-ChildItem "$env:APPDATA\Claude\claude-code\*\*\claude.exe" | Sort-Object LastWriteTime)[-1].FullName
-& $C plugin test mod                                                          # testes do mod
-powershell -NoProfile -ExecutionPolicy Bypass -File app\publicar.ps1 -Arrancar  # compila, publica e arranca
+& $C plugin test mod                                                          # mod tests
+powershell -NoProfile -ExecutionPolicy Bypass -File app\publicar.ps1 -Arrancar  # build, publish and start
 ```
 
-## Desinstalar
+## Uninstall
 
-1. Tira as duas linhas `CLAUDE_CODE_PLUGIN_*` do bloco `env` de `~/.claude/settings.json`.
-2. Sai da Fila pelo ícone da bandeja (ou `Fila.exe --sair`) e desliga o arranque (`Fila.exe --arranque off`).
-3. Opcional: apaga `%USERPROFILE%\.claude\fila-atencao\` (fila, organização, consumo, histórico, mensagens e
-   registos) e `%LOCALAPPDATA%\Fila\` (o perfil do WebView2).
+1. Remove the two `CLAUDE_CODE_PLUGIN_*` lines from the `env` block of `~/.claude/settings.json`.
+2. Quit Fila from the tray icon (or `Fila.exe --sair`) and switch off the autostart (`Fila.exe --arranque off`).
+3. Optional: delete `%USERPROFILE%\.claude\fila-atencao\` (queue, organisation, usage, history, messages and
+   logs) and `%LOCALAPPDATA%\Fila\` (the WebView2 profile).
 
-## Contribuir
+## Contributing
 
-Ajuda é bem-vinda, por *pull request* a partir de um fork: lê o [`CONTRIBUTING.md`](CONTRIBUTING.md) (como correr os
-testes e o que não pôr nos dados de exemplo). Para um erro ou uma ideia, abre um *issue*. Para uma vulnerabilidade,
-vê o [`SECURITY.md`](SECURITY.md). Só o dono do projeto tem escrita no `master`.
+Help is welcome, by pull request from a fork: read [`CONTRIBUTING.md`](CONTRIBUTING.md) (how to run the tests
+and what not to put in the sample data). For a bug or an idea, open an issue. For a vulnerability, see
+[`SECURITY.md`](SECURITY.md). Only the project owner can write to `master`.
 
-## Licença
+## License
 
-[MIT](LICENSE) © 2026 António Sousa. A `Fila.exe` leva consigo o *Microsoft Edge WebView2 SDK*
-(`Microsoft.Web.WebView2`), que tem a sua própria licença.
+[MIT](LICENSE) © 2026 António Sousa. `Fila.exe` ships with the *Microsoft Edge WebView2 SDK*
+(`Microsoft.Web.WebView2`), which has its own license.
 
-Versão **1.0.2**.
+Version **1.0.3**.

@@ -1,7 +1,6 @@
 # Fila · Referência técnica
 
-O pormenor de cada peça. Para a visão geral, a instalação e o uso, ver o [README](../README.md); para o estado
-do projeto, as decisões do dono e as armadilhas, ver [`AGENTS.md`](../AGENTS.md).
+O pormenor de cada peça. Para a visão geral, a instalação e o uso, ver o [README](../README.md).
 
 - [As peças](#as-peças)
 - [Dados em disco](#dados-em-disco)
@@ -84,7 +83,7 @@ ferramenta), recentes (todos os chats pela última mensagem) e o medidor do cons
 previsão). Os Recentes têm **filtros** (à espera, a trabalhar, parados), **ordenar** (última mensagem, mais
 antigos, nome, grupo) e **procurar**; o filtro e a ordem ficam guardados no navegador.
 
-Cada chat tem uma ficha com Abrir, Mensagem, Ver grupo e **Dispensar**. Dispensar esconde o chat da fila
+Cada chat tem uma ficha com Abrir, Ver grupo e **Dispensar**. Dispensar esconde o chat da fila
 (ou do «a trabalhar») só até ao turno seguinte. Um «a trabalhar» cuja sessão do CLI a app já largou (um
 `/clear` a meio do turno) sai sozinho.
 
@@ -132,14 +131,15 @@ A aba Consumo reconstrói o histórico de tokens a partir das transcrições do 
 
 - o custo equivalente na API (preços em `gestor/precos.json`), em dólares e em euros (taxa do BCE à vista);
 - as horas de uso ativo e passivo;
-- a poupança face à subscrição (110 €/mês, em `fila-atencao\consumo-config.json`);
+- a poupança face à subscrição: o valor mensal é o que escreves na aba (fica em `fila-atencao\consumo-config.json`),
+  porque a Fila não deteta o plano;
 - as horas de ponta (`gestor/ponta.json`; não há regra oficial em vigor): mapa de calor e excesso medido com
   as leituras do mod.
 
-#### Chats e mensagens
+#### Novo chat e paleta
 
-Novo chat (`claude://code/new`, numa pasta à escolha), mensagens a vários chats com confirmação, e a paleta
-de comandos (Ctrl+K) para procurar chats, grupos e ações.
+Novo chat (`claude://code/new`, numa pasta à escolha) e a paleta de comandos (Ctrl+K) para procurar chats,
+grupos e ações. O gestor não tem botões para enviar mensagens a chats (ver [Orquestrador](#orquestrador)).
 
 ### Orquestrador
 
@@ -147,11 +147,11 @@ Chat dedicado na app que usa a skill [`skills/orquestrar/SKILL.md`](../skills/or
 para `~/.claude/skills/orquestrar/`): dá pontos de situação e envia mensagens a todos ou a alguns chats,
 sempre com confirmação. O seu id está em `fila-atencao\orquestrador.json` e fica fora da fila.
 
-O botão **Mensagem** do gestor deixa o pedido em `saida\` e o mod do orquestrador (o carteiro) tenta
-entregá-lo, mas **ainda não entrega nada** (testado a 3 de novembro de 2026): só corre com o chat do
-orquestrador aberto, só chega a chats que também estejam abertos, e o modo automático do Claude recusa os
-envios que partem de um mod («sem veredicto»). Para enviar a um chat, pede-o ao orquestrador, que o faz com a
-própria ferramenta e a tua confirmação.
+O gestor já não tem botão **Mensagem**: o envio pelo carteiro (pedidos em `saida\`, rotas `/api/mensagens/*`
+e o mod do orquestrador) nunca entregou nada (testado a 3 de novembro de 2026), porque o modo automático do
+Claude recusa os envios que partem de um mod («sem veredicto»). O código do carteiro ficou, sem nada na
+interface que o use. Para enviar a um chat, pede-o ao orquestrador, que o faz com a própria ferramenta e a tua
+confirmação.
 
 ### Barra antiga (`bar/fila-barra.ps1`)
 
