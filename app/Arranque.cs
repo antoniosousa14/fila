@@ -51,7 +51,7 @@ namespace Fila
                 ligacao.Arguments = "";
                 ligacao.WorkingDirectory = Caminhos.Perfil;
                 ligacao.WindowStyle = 7;
-                ligacao.Description = "Fila de atenção";
+                ligacao.Description = "Fila";
                 ligacao.IconLocation = Caminhos.Exe + ",0";
                 ligacao.Save();
                 Registo.Info("arranque com o Windows: ligado (" + Caminhos.Exe + ")");

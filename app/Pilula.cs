@@ -143,7 +143,7 @@ namespace Fila
         public Pilula(string ficheiroBarra)
         {
             this.ficheiroBarra = ficheiroBarra;
-            Title = "Fila de atenção";
+            Title = "Fila";
             WindowStyle = WindowStyle.None;
             AllowsTransparency = true;
             Background = Brushes.Transparent;

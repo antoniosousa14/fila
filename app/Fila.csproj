@@ -9,9 +9,9 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>Fila</AssemblyName>
     <RootNamespace>Fila</RootNamespace>
-    <Version>1.0.0</Version>
-    <Product>Fila de atenção</Product>
-    <Description>Fila de atenção: pílula, gestor de chats e tecla de menu</Description>
+    <Version>1.0.1</Version>
+    <Product>Fila</Product>
+    <Description>Fila: pílula, gestor de chats e tecla de menu</Description>
     <ApplicationIcon>fila.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>

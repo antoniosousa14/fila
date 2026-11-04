@@ -1,6 +1,6 @@
 {
   "name": "fila-atencao",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Chats à tua espera, numerados e ordenados por IA, acima da caixa de texto",
   "types": "./types/index.d.ts"

@@ -146,7 +146,7 @@ namespace Fila
             tecla.Segurada += () => ui.BeginInvoke(new Action(AlternarPilula));
             if (!tecla.Instalar())
             {
-                bandeja.Aviso("Fila de atenção", "Não foi possível apanhar a tecla de menu.");
+                bandeja.Aviso("Fila", "Não foi possível apanhar a tecla de menu.");
             }
 
             pilula.Atualizar();

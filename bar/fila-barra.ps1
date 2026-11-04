@@ -900,7 +900,7 @@ try {
   $script:pilulaVisivel = if ($null -ne $guardado.pilula) { [bool]$guardado.pilula } else { $guardado.modo -ne 'escondida' }
 
   $janela = New-Object System.Windows.Window
-  $janela.Title = 'Fila de atenção'
+  $janela.Title = 'Fila'
   $janela.WindowStyle = 'None'
   $janela.AllowsTransparency = $true
   $janela.Background = [System.Windows.Media.Brushes]::Transparent

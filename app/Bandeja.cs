@@ -54,7 +54,7 @@ namespace Fila
             icone = new NotifyIcon
             {
                 Icon = apagada,
-                Text = "Fila de atenção",
+                Text = "Fila",
                 ContextMenuStrip = menu,
                 Visible = true,
             };
