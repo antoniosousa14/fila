@@ -124,6 +124,25 @@ test('GET /api/estado junta sessões e fila', async t => {
   assert.equal(JSON.stringify(estado).includes('segredo-de-teste'), false)
 })
 
+test('o chat onde escreveste por último (foco.json), escondido da barra pelo mod, também está à espera no gestor', async t => {
+  const { porta, raiz } = await arrancar(t)
+  // O mod publica a barra sem o chat do foco; o item continua a estar à espera.
+  await writeFile(join(raiz, 'barra.json'), JSON.stringify({
+    geradaEm: Date.now(), modelo: { vazia: true, resumo: 'Nada à tua espera · 0 a trabalhar' }, trabalho: [],
+  }))
+  assert.deepEqual((await pedido(porta, { caminho: '/api/estado' })).json().espera, [])
+  await writeFile(join(raiz, 'foco.json'), JSON.stringify({ sessao: SESSAO, em: Date.now() }))
+  const estado = (await pedido(porta, { caminho: '/api/estado' })).json()
+  assert.deepEqual(estado.espera.map(e => [e.sessao, e.local, e.precisa]), [[SESSAO, LOCAL, 'Aprovar']])
+  assert.equal(estado.numeros.espera, 1)
+  // Os projetos contam-no também (é a tua vez nesse projeto).
+  const projeto = (await pedido(porta, { caminho: '/api/projetos' })).json().projetos.find(p => p.id === GRUPO_F)
+  assert.equal(projeto.espera, 1)
+  // foco.json estragado ou com outro tipo não parte nada.
+  await writeFile(join(raiz, 'foco.json'), '{{ não é json')
+  assert.deepEqual((await pedido(porta, { caminho: '/api/estado' })).json().espera, [])
+})
+
 test('GET /api/projetos: um projeto por grupo, com onde ficaste tirado da transcrição', async t => {
   const { porta } = await arrancar(t)
   const r = await pedido(porta, { caminho: '/api/projetos' })

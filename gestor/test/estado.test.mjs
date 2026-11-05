@@ -74,6 +74,56 @@ test('chip sem sessão nem item usa o texto do chip e importância 3', () => {
   assert.equal(e.precisa, '')
 })
 
+// O mod esconde do barra.json o chat onde escreveste por último (o «foco»: já o estás a ver). No gestor,
+// que serve para ver tudo o que espera por ti, esse chat também tem de aparecer à espera.
+const semSaNaBarra = { ...barra, modelo: { ...barra.modelo, chips: [] } }
+
+test('o chat do foco, que o mod esconde da barra, aparece na espera com o cartão do item', () => {
+  for (const b of [semSaNaBarra, { modelo: { vazia: true, resumo: 'Nada à tua espera' } }]) {
+    const e = montarEstado({ ...base, barra: b, foco: 'sa' })
+    assert.deepEqual(e.espera.map(x => [x.numero, x.sessao, x.local, x.titulo]), [[1, 'sa', 'local_a', 'Permissões de pagamentos']])
+    assert.equal(e.espera[0].precisa, 'Aprovar o deploy')
+    assert.equal(e.espera[0].desde, agora - 3 * M)
+    assert.equal(e.espera[0].urgente, true)
+    assert.equal(e.numeros.espera, 1)
+  }
+})
+
+test('o foco não repete um chat que já vem na barra, nem aparece sem foco', () => {
+  assert.equal(montarEstado({ ...base, foco: 'sa' }).espera.length, 1)
+  assert.deepEqual(montarEstado({ ...base, barra: semSaNaBarra }).espera, [])
+  assert.deepEqual(montarEstado({ ...base, barra: semSaNaBarra, foco: 'nao-existe' }).espera, [])
+})
+
+test('o foco só conta se ainda está à espera, não foi dispensado nem arquivado e não é o orquestrador', () => {
+  const com = extra => montarEstado({ ...base, barra: semSaNaBarra, foco: 'sa', ...extra }).espera
+  assert.equal(com({}).length, 1)
+  // Dispensado neste turno (mesmo desde): fica fora; uma dispensa de um turno antigo não conta.
+  assert.deepEqual(com({ dispensados: { sa: agora - 3 * M } }), [])
+  assert.equal(com({ dispensados: { sa: agora - D } }).length, 1)
+  assert.deepEqual(com({ sessoes: sessoes.map(s => (s.local === 'local_a' ? { ...s, arquivado: true } : s)) }), [])
+  assert.deepEqual(com({ orquestrador: 'local_a' }), [])
+  // Um chat a trabalhar (foco 'sb') ainda não espera por ninguém.
+  assert.deepEqual(montarEstado({ ...base, barra: semSaNaBarra, foco: 'sb' }).espera, [])
+})
+
+test('o foco ignora o item de uma sessão do CLI que o /clear deixou para trás', () => {
+  const velho = { sessao: 'sa0', local: 'local_a', titulo: 'Ola', projeto: 'FAROL', estado: 'a-espera', desde: agora - D, classificacao }
+  const e = montarEstado({ ...base, itens: [...itens, velho], barra: semSaNaBarra, foco: 'sa0' })
+  assert.deepEqual(e.espera, [])
+})
+
+test('o foco entra pela ordem da importância: depois dos mais importantes, antes dos menos', () => {
+  const leve = { sessao: 'sl', local: 'local_l', titulo: 'Leve', projeto: 'P', estado: 'a-espera', desde: agora - 2 * M, classificacao: { ...classificacao, importancia: 2 } }
+  const b = { ...barra, modelo: { ...barra.modelo, chips: [chip('sl', 'local_l', leve.desde)] } }
+  const todos = [...itens, leve]
+  // sa (importância 5) é o foco e passa à frente do sl (2).
+  assert.deepEqual(montarEstado({ ...base, itens: todos, barra: b, foco: 'sa' }).espera.map(x => x.sessao), ['sa', 'sl'])
+  // sl (2) é o foco e fica atrás do sa (5), que vem na barra.
+  const b2 = { ...barra, modelo: { ...barra.modelo, chips: [chip('sa', 'local_a', agora - 3 * M)] } }
+  assert.deepEqual(montarEstado({ ...base, itens: todos, barra: b2, foco: 'sl' }).espera.map(x => x.sessao), ['sa', 'sl'])
+})
+
 test('dispensado com o mesmo desde sai da espera; dispensa de um turno antigo não', () => {
   assert.equal(montarEstado({ ...base, dispensados: { sa: agora - 3 * M } }).espera.length, 0)
   assert.equal(montarEstado({ ...base, dispensados: { sa: agora - D } }).espera.length, 1)

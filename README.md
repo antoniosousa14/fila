@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img alt="Version 1.0.3" src="https://img.shields.io/badge/release-1.0.3-ff7a1a">
+  <img alt="Version 1.0.4" src="https://img.shields.io/badge/release-1.0.4-ff7a1a">
   <img alt="Windows 11" src="https://img.shields.io/badge/Windows-11-0078d4">
   <img alt=".NET 9" src="https://img.shields.io/badge/.NET-9-512bd4">
   <img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-339933">
@@ -155,11 +155,11 @@ flowchart LR
 
 ## Installation
 
-1. **Download** `Fila-1.0.3-win-x64.zip` from the [Releases](../../releases) page and extract it to a folder
+1. **Download** `Fila-1.0.4-win-x64.zip` from the [Releases](../../releases) page and extract it to a folder
    that will stay put, for example `C:\Fila`. The mod is loaded from that folder, so do not delete or move it
    afterwards.
    > `Fila.exe` is not signed: Windows may warn that it does not recognise it. Before extracting, unblock the
-   > zip (`Unblock-File .\Fila-1.0.3-win-x64.zip`) or, in the warning, choose *More info → Run anyway*.
+   > zip (`Unblock-File .\Fila-1.0.4-win-x64.zip`) or, in the warning, choose *More info → Run anyway*.
 
 2. **Connect the mod to Claude Code.** In `~/.claude/settings.json` (make a copy first), add to the `env` block:
 
@@ -273,4 +273,4 @@ and what not to put in the sample data). For a bug or an idea, open an issue. Fo
 [MIT](LICENSE) © 2026 António Sousa. `Fila.exe` ships with the *Microsoft Edge WebView2 SDK*
 (`Microsoft.Web.WebView2`), which has its own license.
 
-Version **1.0.3**.
+Version **1.0.4**.

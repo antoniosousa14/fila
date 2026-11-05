@@ -16,6 +16,8 @@ export function pastas(env = process.env) {
     // As marcas do gestor nos projetos (dispensar, sem importância, linhas escondidas).
     projetosMarcas: join(raiz, 'projetos-marcas.json'),
     barra: join(raiz, 'barra.json'),
+    // O chat onde a pessoa escreveu por último ({ sessao, em }), escrito pelo mod; só para leitura.
+    foco: join(raiz, 'foco.json'),
     gestor: join(raiz, 'gestor.json'),
     orquestrador: join(raiz, 'orquestrador.json'),
     organizacao: join(raiz, 'organizacao.json'),

@@ -27,7 +27,7 @@ function porChave(lista, chave) {
 // A ordem da espera é a da IA (barra.json); as dispensas filtram-se aqui porque o barra.json só é
 // reescrito no próximo turno de algum chat (a barra faz o mesmo). A árvore é a dos grupos da barra
 // lateral do Claude (`grupos`, `atribuicoes`), com as pastas-mãe do gestor (`organizacao`).
-export function montarEstado({ sessoes = [], itens = [], barra, dispensados = {}, agora, meiaNoite, organizacao = vazia(), grupos = [], atribuicoes = {}, erroGrupos }) {
+export function montarEstado({ sessoes = [], itens = [], barra, dispensados = {}, agora, meiaNoite, organizacao = vazia(), grupos = [], atribuicoes = {}, erroGrupos, foco, orquestrador }) {
   const sessaoDe = porChave(sessoes, 'local')
   const itemDe = porChave(itens, 'sessao')
   const modelo = barra?.modelo?.vazia === false ? barra.modelo : undefined
@@ -36,7 +36,25 @@ export function montarEstado({ sessoes = [], itens = [], barra, dispensados = {}
   // Um chat arquivado na app deixa de contar, mesmo que o mod ainda tenha o item (dura 7 dias).
   const arquivado = local => sessaoDe.get(local)?.arquivado === true
 
-  const espera = chips
+  const importanciaDe = chip => itemDe.get(chip.sessao)?.classificacao?.importancia ?? 3
+
+  // O mod esconde do barra.json o chat onde a pessoa escreveu por último (o foco: já o está a ver), mas o
+  // gestor serve para ver tudo o que espera por ela: esse chat entra aqui pela ordem da importância. Um item
+  // de uma sessão do CLI que o /clear deixou para trás (há outro mais novo do mesmo chat) não conta.
+  const doFoco = itemDe.get(foco)
+  const chipDoFoco = doFoco && doFoco.estado === 'a-espera' && Number.isFinite(doFoco.desde)
+    && doFoco.local !== orquestrador && !arquivado(doFoco.local) && dispensados[doFoco.sessao] !== doFoco.desde
+    && !chips.some(chip => chip.sessao === doFoco.sessao)
+    && !itens.some(i => i.local === doFoco.local && i.sessao !== doFoco.sessao && i.desde > doFoco.desde)
+    ? { sessao: doFoco.sessao, local: doFoco.local, desde: doFoco.desde, texto: `${doFoco.projeto ?? ''} · ${doFoco.titulo ?? ''}`, silenciado: false }
+    : undefined
+  const comFoco = [...chips]
+  if (chipDoFoco) {
+    const antes = comFoco.findIndex(chip => importanciaDe(chip) < importanciaDe(chipDoFoco))
+    comFoco.splice(antes === -1 ? comFoco.length : antes, 0, chipDoFoco)
+  }
+
+  const espera = comFoco
     .filter(chip => dispensados[chip.sessao] !== chip.desde && !arquivado(chip.local))
     .map((chip, i) => {
       const s = sessaoDe.get(chip.local)

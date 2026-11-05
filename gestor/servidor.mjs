@@ -136,10 +136,11 @@ export async function criarServidor({ pastas = pastasPorOmissao(), portaInicial 
 
   async function estado() {
     const agora = Date.now()
-    const [sessoes, fila, barra, orquestrador, organizacao, app, consumo, mensagens] = await Promise.all([
+    const [sessoes, fila, barra, foco, orquestrador, organizacao, app, consumo, mensagens] = await Promise.all([
       lerSessoes(pastas.sessoes, cache),
       lerFila(pastas.itens, agora),
       lerJson(pastas.barra),
+      lerJson(pastas.foco),
       lerJson(pastas.orquestrador),
       org.lerOrganizacao(pastas.organizacao),
       lerGruposDaApp(pastas.configApp, cacheGrupos),
@@ -167,9 +168,12 @@ export async function criarServidor({ pastas = pastasPorOmissao(), portaInicial 
       await dispensar(pastas.itens, t.sessao, t.desde).catch(() => {})
     }
 
+    const localOrquestrador = localValido(orquestrador?.local) ? orquestrador.local : null
+
     return {
-      ...montarEstado({ sessoes, ...fila, barra, agora, meiaNoite: meiaNoiteLocal(agora), organizacao, grupos: app.grupos, atribuicoes: app.atribuicoes, erroGrupos: app.erro }),
-      orquestrador: localValido(orquestrador?.local) ? orquestrador.local : null,
+      // `foco`: o mod esconde da barra o chat onde escreveste por último; aqui conta como qualquer outro.
+      ...montarEstado({ sessoes, ...fila, barra, agora, meiaNoite: meiaNoiteLocal(agora), organizacao, grupos: app.grupos, atribuicoes: app.atribuicoes, erroGrupos: app.erro, foco: uuidValido(foco?.sessao) ? foco.sessao : undefined, orquestrador: localOrquestrador }),
+      orquestrador: localOrquestrador,
       consumo: resumirConsumo(consumo, agora),
       mensagens,
     }
