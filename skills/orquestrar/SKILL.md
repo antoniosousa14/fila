@@ -1,6 +1,6 @@
 ---
 name: orquestrar
-description: Orquestrador dos chats do Claude Code da pessoa. Lê a fila de atenção, resume o que cada chat está a fazer e envia mensagens a todos ou só a alguns chats. Usa quando pedirem um ponto de situação dos chats, o que está parado ou à espera, ou para dizer algo a vários chats ao mesmo tempo.
+description: Orquestrador dos chats do Claude Code da pessoa. Lê o estado do NextUp (a fila de chats à espera), resume o que cada chat está a fazer e envia mensagens a todos ou só a alguns chats. Usa quando pedirem um ponto de situação dos chats, o que está parado ou à espera, ou para dizer algo a vários chats ao mesmo tempo.
 ---
 
 # Orquestrador
@@ -11,11 +11,11 @@ description: Orquestrador dos chats do Claude Code da pessoa. Lê a fila de aten
 
 Lê sempre o estado fresco antes de responder; o que leste há minutos já pode estar velho.
 
-- `%USERPROFILE%\.claude\fila-atencao\barra.json`, escrito pelo mod fila-atencao em cada evento de cada chat:
+- `%USERPROFILE%\.claude\nextup\barra.json`, escrito pelo mod nextup em cada evento de cada chat:
   - `modelo.chips` e `modelo.extra`: os chats à espera da pessoa, já ordenados (importância, tempo à espera, desbloqueios rápidos). Cada um tem `texto` (projeto · rótulo), `local`, `desde` e `cartao` (Pediste / Fez / Precisa de ti).
   - `trabalho`: os chats a trabalhar, com `pedido`, `feitos`/`total` e `atual` (lista de tarefas), `ultima` (última ação) e `ferramentas`.
-- `%USERPROFILE%\.claude\fila-atencao\itens\<sessao>.json`: um por chat, com `local` (id `local_…` da app), `titulo`, `projeto`, `estado` (`a-trabalhar` ou `a-espera`), `desde` (ms desde 1970), `pedido`, `classificacao` e `progresso`.
-- `%USERPROFILE%\.claude\fila-atencao\orquestrador.json`: o teu próprio `local`. Nunca te envies mensagens a ti.
+- `%USERPROFILE%\.claude\nextup\itens\<sessao>.json`: um por chat, com `local` (id `local_…` da app), `titulo`, `projeto`, `estado` (`a-trabalhar` ou `a-espera`), `desde` (ms desde 1970), `pedido`, `classificacao` e `progresso`.
+- `%USERPROFILE%\.claude\nextup\orquestrador.json`: o teu próprio `local`. Nunca te envies mensagens a ti.
 - `mcp__ccd_session_mgmt__list_sessions`: títulos, pastas, grupos e se o chat está a correr. `mcp__ccd_session_mgmt__list_events` para ler o que um chat disse quando os ficheiros não chegam.
 
 ## Ponto de situação
@@ -39,7 +39,7 @@ Não pares, arquives nem apagues chats, a não ser que a pessoa peça; mesmo ass
 
 ## O gestor e o carteiro
 
-O mod fila-atencao deste chat é o carteiro: entrega sozinho, sem passar por ti, as mensagens que a pessoa confirma no gestor (`saida\<id>.json` → `$.session.send` → `saida\<id>.resultado.json`). Não tens de fazer nada; só tens de ficar aberto. Se te perguntarem porque é que uma mensagem do gestor não saiu, lê o `<id>.resultado.json` correspondente.
+O mod nextup deste chat é o carteiro: entrega sozinho, sem passar por ti, as mensagens que a pessoa confirma no gestor (`saida\<id>.json` → `$.session.send` → `saida\<id>.resultado.json`). Não tens de fazer nada; só tens de ficar aberto. Se te perguntarem porque é que uma mensagem do gestor não saiu, lê o `<id>.resultado.json` correspondente.
 
 ## Gastar pouco
 

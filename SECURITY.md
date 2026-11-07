@@ -5,7 +5,7 @@
 **Não abras um *issue* público.** Usa o relatório privado do GitHub: no separador **Security** do repositório,
 *Report a vulnerability*. Diz o que encontraste, como reproduzir e que impacto vês.
 
-## O que a Fila promete
+## O que o NextUp promete
 
 - O gestor só escuta em `127.0.0.1` e os pedidos que alteram alguma coisa exigem uma origem local.
 - Só **lê** os dados do Claude (sessões, grupos, transcrições). Não altera chats nem grupos.

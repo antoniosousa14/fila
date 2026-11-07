@@ -3,22 +3,24 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 
-namespace Fila
+namespace NextUp
 {
     static class Program
     {
-        // Fila.exe                      guardião: arranca e vigia a app (é o que o atalho de arranque corre)
-        // Fila.exe --app [--esperar]    a app, sem guardião
-        // Fila.exe --previsao <pasta> [<barra.json>]   desenha pilula.png e quadro.png e sai
-        // Fila.exe --arranque on|off    liga ou desliga o atalho de arranque do Windows
-        // Fila.exe --sair               pede à Fila que corre para sair (e ao guardião, que acaba)
-        // Fila.exe --autoteste          corre os testes internos (resultado em autoteste.txt)
+        // NextUp.exe                      guardião: arranca e vigia a app (é o que o atalho de arranque corre)
+        // NextUp.exe --app [--esperar]    a app, sem guardião
+        // NextUp.exe --previsao <pasta> [<barra.json>]   desenha pilula.png e quadro.png e sai
+        // NextUp.exe --arranque on|off    liga ou desliga o atalho de arranque do Windows
+        // NextUp.exe --sair               pede ao NextUp que corre para sair (e ao guardião, que acaba)
+        // NextUp.exe --autoteste          corre os testes internos (resultado em autoteste.txt)
         [STAThread]
         static int Main(string[] args)
         {
             try
             {
                 string modo = args.Length > 0 ? args[0] : "";
+                // --previsao e --autoteste nunca mexem nos dados reais.
+                if (modo != "--previsao" && modo != "--autoteste") Migracao.Executar();
                 switch (modo)
                 {
                     case "--app":

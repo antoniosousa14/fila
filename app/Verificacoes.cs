@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace Fila
+namespace NextUp
 {
-    // Testes internos, sem Windows pelo meio: `Fila.exe --autoteste`. O resultado fica em
-    // %LOCALAPPDATA%\Fila\autoteste.txt e o código de saída é o número de falhas.
+    // Testes internos, sem Windows pelo meio: `NextUp.exe --autoteste`. O resultado fica em
+    // %LOCALAPPDATA%\NextUp\autoteste.txt e o código de saída é o número de falhas.
     static class Verificacoes
     {
         static readonly List<string> linhas = new List<string>();
@@ -40,7 +40,7 @@ namespace Fila
         {
             // Um toque: largar antes do tempo de segurar dá um Toque e nenhuma Segurada.
             int toques = 0, seguradas = 0;
-            var tecla = new TeclaFila(0x5D, 200);
+            var tecla = new TeclaNextUp(0x5D, 200);
             tecla.Toque += () => Interlocked.Increment(ref toques);
             tecla.Segurada += () => Interlocked.Increment(ref seguradas);
             tecla.Evento(true);

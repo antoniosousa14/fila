@@ -68,7 +68,7 @@ test('limpar aceita só a forma certa', () => {
 })
 
 test('lerMarcas e gravarMarcas: ida e volta, ficheiro em falta ou estragado dá vazio', async t => {
-  const pasta = await mkdtemp(join(tmpdir(), 'fila-marcas-'))
+  const pasta = await mkdtemp(join(tmpdir(), 'nextup-marcas-'))
   t.after(() => rm(pasta, { recursive: true, force: true }))
   const ficheiro = join(pasta, 'dentro', 'projetos-marcas.json')
   assert.deepEqual(await lerMarcas(ficheiro), vazias())

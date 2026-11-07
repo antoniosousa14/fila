@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // Tira as capturas do README com os dados de demonstração (docs/demo/gerar-demo.mjs).
 //
-//   node docs/demo/capturar.mjs --demo <pasta-da-demo> --saida docs/capturas [--exe <Fila.exe>]
+//   node docs/demo/capturar.mjs --demo <pasta-da-demo> --saida docs/capturas [--exe <NextUp.exe>]
 //
-// Precisa de um gestor a correr com as variáveis FILA_* da demonstração (o `gerar-demo.mjs` imprime-as;
-// a porta lê-se de <pasta-da-demo>\fila\gestor.json) e do Microsoft Edge. O Edge corre sem janela,
+// Precisa de um gestor a correr com as variáveis NEXTUP_* da demonstração (o `gerar-demo.mjs` imprime-as;
+// a porta lê-se de <pasta-da-demo>\nextup\gestor.json) e do Microsoft Edge. O Edge corre sem janela,
 // com um perfil novo e à parte, e é guiado pelo protocolo de depuração (sem dependências). Com --exe
-// (uma Fila.exe) tira também a pílula e o quadro com `Fila.exe --previsao`, que só lê o barra.json
+// (um NextUp.exe) tira também a pílula e o quadro com `NextUp.exe --previsao`, que só lê o barra.json
 // da demonstração e escreve dois PNG: não mexe no mutex, no guardião nem nos dados reais.
 import { execFile, spawn } from 'node:child_process'
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
@@ -18,7 +18,7 @@ import { promisify } from 'node:util'
 const executar = promisify(execFile)
 const argumentos = Object.fromEntries(process.argv.slice(2).reduce((l, x, i, a) => (x.startsWith('--') ? [...l, [x.slice(2), a[i + 1]]] : l), []))
 if (!argumentos.demo || !argumentos.saida) {
-  console.error('Uso: node docs/demo/capturar.mjs --demo <pasta-da-demo> --saida <pasta-das-imagens> [--exe <Fila.exe>] [--edge <msedge.exe>]')
+  console.error('Uso: node docs/demo/capturar.mjs --demo <pasta-da-demo> --saida <pasta-das-imagens> [--exe <NextUp.exe>] [--edge <msedge.exe>]')
   process.exit(1)
 }
 const demo = resolve(argumentos.demo)
@@ -33,13 +33,13 @@ const edge = argumentos.edge ?? [
 ].find(existsSync)
 if (!edge) throw new Error('Não encontrei o Microsoft Edge: indica-o com --edge')
 
-const { porta } = JSON.parse(await readFile(join(demo, 'fila', 'gestor.json'), 'utf8'))
+const { porta } = JSON.parse(await readFile(join(demo, 'nextup', 'gestor.json'), 'utf8'))
 const base = `http://127.0.0.1:${porta}`
 await mkdir(saida, { recursive: true })
 
 // ——— Edge sem janela, guiado pelo protocolo de depuração ———
 
-const perfil = await mkdtemp(join(tmpdir(), 'fila-captura-'))
+const perfil = await mkdtemp(join(tmpdir(), 'nextup-captura-'))
 const portaCdp = 9333 + Math.floor(Math.random() * 500)
 const navegador = spawn(edge, [
   '--headless=new', `--remote-debugging-port=${portaCdp}`, `--user-data-dir=${perfil}`, '--hide-scrollbars',
@@ -164,13 +164,13 @@ try {
   await rm(perfil, { recursive: true, force: true, maxRetries: 5, retryDelay: 300 }).catch(() => {})
 }
 
-// ——— pílula e quadro: Fila.exe --previsao <pasta> <barra.json> ———
+// ——— pílula e quadro: NextUp.exe --previsao <pasta> <barra.json> ———
 
 if (argumentos.exe) {
   console.log('Pílula e quadro:')
-  const temp = await mkdtemp(join(tmpdir(), 'fila-previsao-'))
+  const temp = await mkdtemp(join(tmpdir(), 'nextup-previsao-'))
   try {
-    await executar(resolve(argumentos.exe), ['--previsao', temp, join(demo, 'fila', 'barra.json')], { timeout: 60_000 })
+    await executar(resolve(argumentos.exe), ['--previsao', temp, join(demo, 'nextup', 'barra.json')], { timeout: 60_000 })
     for (const nome of ['pilula.png', 'quadro.png']) {
       await copyFile(join(temp, nome), join(saida, nome))
       console.log(`  ${nome}`)

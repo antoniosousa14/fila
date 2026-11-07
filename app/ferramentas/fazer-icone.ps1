@@ -1,7 +1,7 @@
-﻿# Gera app\fila.ico a partir do logo (gestor\logo.svg): três barras inclinadas e o bloco de sinal.
+﻿# Gera app\nextup.ico a partir do logo (gestor\logo.svg): três barras inclinadas e o bloco de sinal.
 # Correr uma vez (ou quando o logo mudar): powershell -NoProfile -STA -File app\ferramentas\fazer-icone.ps1
 Add-Type -AssemblyName PresentationCore, PresentationFramework, WindowsBase
-$saida = Join-Path (Split-Path $PSScriptRoot -Parent) 'fila.ico'
+$saida = Join-Path (Split-Path $PSScriptRoot -Parent) 'nextup.ico'
 $tamanhos = 16, 20, 24, 32, 40, 48, 64, 128, 256
 
 function New-Imagem([int]$lado) {

@@ -5,7 +5,7 @@
 //
 // Escreve em <pasta-de-destino> a mesma estrutura que o Claude e o mod deixam no disco (sessões da
 // app, grupos, itens, barra.json, situação, consumo e transcrições) e imprime as variáveis
-// FILA_RAIZ, FILA_SESSOES, FILA_CONFIG_APP e FILA_PROJETOS que fazem o gestor ler esta pasta em vez
+// NEXTUP_RAIZ, NEXTUP_SESSOES, NEXTUP_CONFIG_APP e NEXTUP_PROJETOS que fazem o gestor ler esta pasta em vez
 // dos dados reais. As horas são relativas a Date.now() (um chat à espera há 38 min fica à espera há
 // 38 min no momento em que corres o gerador), por isso gera-se de novo antes de cada utilização.
 //
@@ -28,7 +28,7 @@ const casa = process.env.USERPROFILE || homedir()
 const PROTEGIDAS = [
   join(casa, '.claude'),
   join(process.env.APPDATA || join(casa, 'AppData', 'Roaming'), 'Claude'),
-  join(process.env.LOCALAPPDATA || join(casa, 'AppData', 'Local'), 'Fila'),
+  join(process.env.LOCALAPPDATA || join(casa, 'AppData', 'Local'), 'NextUp'),
 ]
 const dentroDe = (p, pai) => {
   const a = resolve(p).toLowerCase()
@@ -46,13 +46,13 @@ if (!process.argv[2] || process.argv[2].startsWith('-')) {
   falhar('Uso: node docs/demo/gerar-demo.mjs <pasta-de-destino>\n\nA pasta tem de estar vazia (ou ser uma pasta de demonstração de uma execução anterior).')
 }
 const destino = resolve(process.argv[2])
-if (PROTEGIDAS.some(p => dentroDe(destino, p))) falhar(`Recusei: ${destino} está numa pasta de dados reais do Claude ou da Fila. Escolhe outra pasta.`)
+if (PROTEGIDAS.some(p => dentroDe(destino, p))) falhar(`Recusei: ${destino} está numa pasta de dados reais do Claude ou do NextUp. Escolhe outra pasta.`)
 const existentes = await readdir(destino).catch(() => null)
 if (existentes?.length && !existentes.includes(MARCA)) falhar(`Recusei: ${destino} não está vazia e não é uma pasta de demonstração. Escolhe outra pasta ou uma vazia.`)
 for (const nome of existentes ?? []) await rm(join(destino, nome), { recursive: true, force: true })
 
 const pasta = {
-  raiz: join(destino, 'fila'),
+  raiz: join(destino, 'nextup'),
   sessoes: join(destino, 'sessoes'),
   config: join(destino, 'claude_desktop_config.json'),
   projetos: join(destino, 'projetos'),
@@ -592,7 +592,7 @@ await escrever(join(destino, MARCA), 'Pasta criada por docs/demo/gerar-demo.mjs.
 // ——— resultado ———
 
 const custoTotal = eventos.reduce((s, e) => s + e.custo, 0)
-const variaveis = { FILA_RAIZ: pasta.raiz, FILA_SESSOES: pasta.sessoes, FILA_CONFIG_APP: pasta.config, FILA_PROJETOS: pasta.projetos }
+const variaveis = { NEXTUP_RAIZ: pasta.raiz, NEXTUP_SESSOES: pasta.sessoes, NEXTUP_CONFIG_APP: pasta.config, NEXTUP_PROJETOS: pasta.projetos }
 console.log(`Dados fictícios gerados em ${destino}`)
 console.log(`${CHATS.length} chats em ${grupos.length} projetos, ${porDia.size} dias de histórico, ~${Math.round(custoTotal)} $ equivalentes na API.\n`)
 for (const [nome, valor] of Object.entries(variaveis)) console.log(`${nome}=${valor}`)

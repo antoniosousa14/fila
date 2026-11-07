@@ -50,7 +50,7 @@ async function preparar() {
       'dframe-code-sections': { 'conta/org': { sections: [{ id: GRUPO_F, kind: 'manual', order: 2 }, { id: GRUPO_M, kind: 'manual', order: 3 }] } },
     } },
   }))
-  await writeFile(join(web, 'index.html'), '<!doctype html><title>Fila · gestor de chats</title>')
+  await writeFile(join(web, 'index.html'), '<!doctype html><title>NextUp · gestor de chats</title>')
   await writeFile(join(web, 'estilo.css'), 'body{}')
 
   return { base, raiz, sessoes, web }
@@ -61,7 +61,7 @@ async function arrancar(t, opcoes = {}) {
   const abertos = []
   const links = []
   const gestor = await criarServidor({
-    pastas: { ...pastas({ FILA_RAIZ: p.raiz, FILA_SESSOES: p.sessoes, FILA_CONFIG_APP: join(p.base, 'config.json'), FILA_PROJETOS: join(p.base, 'projetos') }), web: p.web },
+    pastas: { ...pastas({ NEXTUP_RAIZ: p.raiz, NEXTUP_SESSOES: p.sessoes, NEXTUP_CONFIG_APP: join(p.base, 'config.json'), NEXTUP_PROJETOS: join(p.base, 'projetos') }), web: p.web },
     portaInicial: 0,
     abrir: local => abertos.push(local),
     abrirUrl: url => links.push(url),
@@ -104,7 +104,7 @@ test('ids: local_ e sessão têm de ser UUID completos', () => {
 
 test('pastas por omissão vêm de USERPROFILE e APPDATA', () => {
   const p = pastas({ USERPROFILE: 'C:\\Users\\x', APPDATA: 'C:\\Users\\x\\AppData\\Roaming' })
-  assert.equal(p.raiz, join('C:\\Users\\x', '.claude', 'fila-atencao'))
+  assert.equal(p.raiz, join('C:\\Users\\x', '.claude', 'nextup'))
   assert.equal(p.itens, join(p.raiz, 'itens'))
   assert.equal(p.sessoes, join('C:\\Users\\x\\AppData\\Roaming', 'Claude', 'claude-code-sessions'))
 })

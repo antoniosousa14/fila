@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Fila
+namespace NextUp
 {
     // A pílula (logo, quantos esperam, quantos trabalham) no canto do ecrã e, com o rato em cima,
     // o quadro com os chats à espera, os que trabalham e os botões Próximo e Gestor. Desenha o
@@ -143,7 +143,7 @@ namespace Fila
         public Pilula(string ficheiroBarra)
         {
             this.ficheiroBarra = ficheiroBarra;
-            Title = "Fila";
+            Title = "NextUp";
             WindowStyle = WindowStyle.None;
             AllowsTransparency = true;
             Background = Brushes.Transparent;
@@ -630,7 +630,7 @@ namespace Fila
             Coluna(cabeca, "Auto");
             var marca = new StackPanel { Orientation = Orientation.Horizontal };
             marca.Children.Add(Marca.Criar(total > 0, 18));
-            var nome = Bloco("Fila", Paleta.Tinta, 13.5, forte: true);
+            var nome = Bloco("NextUp", Paleta.Tinta, 13.5, forte: true);
             nome.Margin = new Thickness(8, 0, 0, 0);
             marca.Children.Add(nome);
             var contagem = Bloco(total.ToString("00", CultureInfo.InvariantCulture) + " à espera", total > 0 ? Paleta.Sinal : Paleta.Fraco, 10.5, mono: true);

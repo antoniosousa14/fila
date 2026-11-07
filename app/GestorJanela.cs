@@ -9,14 +9,14 @@ using System.Windows.Threading;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 
-namespace Fila
+namespace NextUp
 {
     // A janela do gestor: o WebView2 (o motor do Edge, mas dentro desta app) a mostrar a página do
     // servidor local, em ecrã inteiro. Fechá-la ou minimizá-la só a esconde (a página fica
     // carregada, por isso volta já); é a app que decide quando a mostra, com a tecla de menu.
     sealed class GestorJanela : Window
     {
-        public const string TituloGestor = "Fila · gestor de chats";
+        public const string TituloGestor = "NextUp · gestor de chats";
         const string PaginaEspera = "<!doctype html><meta charset=utf-8><title>" + TituloGestor + "</title>"
             + "<body style=\"margin:0;height:100vh;display:grid;place-items:center;background:#111110;color:#9A9993;"
             + "font:15px 'Segoe UI Variable Text','Segoe UI',sans-serif\"><div>A ligar ao gestor…</div>";

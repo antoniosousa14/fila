@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Fila
+namespace NextUp
 {
-    // A Fila: junta o gancho da tecla de menu, o servidor do gestor, a janela do gestor, a pílula
+    // O NextUp: junta o gancho da tecla de menu, o servidor do gestor, a janela do gestor, a pílula
     // e o ícone da bandeja.
     //   toque na tecla   abre o gestor (maximizado); outro toque esconde-o
     //   segurar ~1 s     mostra ou esconde a pílula
@@ -22,9 +22,9 @@ namespace Fila
         const int SEGURAR_MS = 900;
         public const int SAIDA_REINICIAR = 3;    // o guardião volta a arrancar a app
         public const int SAIDA_CAIU = 4;         // a app desistiu de si mesma (erros em cadeia)
-        const string MUTEX = @"Local\fila-atencao-barra";   // o mesmo da barra antiga: nunca correm as duas
-        public const string EVENTO_ABRIR = @"Local\fila-atencao-abrir";
-        public const string EVENTO_SAIR = @"Local\fila-atencao-sair";
+        const string MUTEX = @"Local\nextup-barra";   // o mesmo da barra antiga: nunca correm as duas
+        public const string EVENTO_ABRIR = @"Local\nextup-abrir";
+        public const string EVENTO_SAIR = @"Local\nextup-sair";
 
         static readonly Regex IdChat = new Regex(@"^[A-Za-z0-9_\-]{1,80}$", RegexOptions.Compiled);
         static readonly Regex IdSessao = new Regex(@"^[A-Za-z0-9_\-\.]{1,120}$", RegexOptions.Compiled);
@@ -35,7 +35,7 @@ namespace Fila
         Servidor servidor;
         GestorJanela gestor;
         Pilula pilula;
-        TeclaFila tecla;
+        TeclaNextUp tecla;
         Bandeja bandeja;
         DispatcherTimer relogio;
         DispatcherTimer sinal;
@@ -49,13 +49,13 @@ namespace Fila
         DateTime inicioErros = DateTime.UtcNow;
         int saida;
         // Voltas do relógio (2 s) entre reinstalar o gancho e escrever o sinal de vida (10 min);
-        // FILA_BATIMENTO serve só para testar.
+        // NEXTUP_BATIMENTO serve só para testar.
         readonly int batimento = LerBatimento();
 
         static int LerBatimento()
         {
             int voltas;
-            return int.TryParse(Environment.GetEnvironmentVariable("FILA_BATIMENTO"), out voltas) && voltas > 0 ? voltas : 300;
+            return int.TryParse(Environment.GetEnvironmentVariable("NEXTUP_BATIMENTO"), out voltas) && voltas > 0 ? voltas : 300;
         }
 
         // Devolve o código de saída: 0 sair de vez, SAIDA_REINICIAR/SAIDA_CAIU para o guardião
@@ -74,7 +74,7 @@ namespace Fila
                 }
                 if (!minha)
                 {
-                    Registo.Info("já há uma Fila a correr: peço-lhe para abrir o gestor");
+                    Registo.Info("já há um NextUp a correr: peço-lhe para abrir o gestor");
                     Sinal.Enviar(Aplicacao.EVENTO_ABRIR);
                     return 0;
                 }
@@ -97,7 +97,7 @@ namespace Fila
         int Executar()
         {
             Registo.Info("a arrancar (versão " + typeof(Aplicacao).Assembly.GetName().Version + ", guardião: "
-                + (Environment.GetEnvironmentVariable("FILA_GUARDIAO") == "1" ? "sim" : "não") + ")");
+                + (Environment.GetEnvironmentVariable("NEXTUP_GUARDIAO") == "1" ? "sim" : "não") + ")");
             Arranque.Migrar();
             wpf = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
             ui = wpf.Dispatcher;
@@ -140,14 +140,14 @@ namespace Fila
                 () => Terminar(SAIDA_REINICIAR, true),
                 () => Terminar(0, true));
 
-            tecla = new TeclaFila(TECLA_MENU, SEGURAR_MS);
+            tecla = new TeclaNextUp(TECLA_MENU, SEGURAR_MS);
             // O gancho corre no seu fio: só passa o trabalho para o fio da interface. O toque
             // decide pelo estado real da janela (se está à vista fecha, senão abre).
             tecla.Toque += () => ui.BeginInvoke(new Action(() => DefinirGestor(!gestor.EstaAberta)));
             tecla.Segurada += () => ui.BeginInvoke(new Action(AlternarPilula));
             if (!tecla.Instalar())
             {
-                bandeja.Aviso("Fila", "Não foi possível apanhar a tecla de menu.");
+                bandeja.Aviso("NextUp", "Não foi possível apanhar a tecla de menu.");
             }
 
             pilula.Atualizar();
@@ -389,7 +389,7 @@ namespace Fila
             {
                 Registo.Erro("ao terminar", e);
             }
-            if (codigo == SAIDA_REINICIAR && Environment.GetEnvironmentVariable("FILA_GUARDIAO") != "1")
+            if (codigo == SAIDA_REINICIAR && Environment.GetEnvironmentVariable("NEXTUP_GUARDIAO") != "1")
             {
                 // Sem guardião não há quem arranque outra: arranca-se a si própria.
                 try
@@ -406,8 +406,8 @@ namespace Fila
         }
     }
 
-    // Avisos entre instâncias: outra Fila (o atalho, um duplo clique no .exe) pede à que já corre
-    // para abrir o gestor; `Fila.exe --sair` pede-lhe para sair.
+    // Avisos entre instâncias: outro NextUp (o atalho, um duplo clique no .exe) pede à que já corre
+    // para abrir o gestor; `NextUp.exe --sair` pede-lhe para sair.
     static class Sinal
     {
         public static bool Enviar(string nome)
@@ -419,7 +419,7 @@ namespace Fila
             }
             catch (Exception e)
             {
-                Registo.Aviso("não consegui avisar a Fila que corre (" + nome + "): " + e.Message);
+                Registo.Aviso("não consegui avisar o NextUp que corre (" + nome + "): " + e.Message);
                 return false;
             }
         }

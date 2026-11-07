@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Fila
+namespace NextUp
 {
     // Chamadas ao Windows que o WPF não dá: pôr janelas à frente, encontrar a janela do Claude,
     // estilos de janela e a barra de título escura.

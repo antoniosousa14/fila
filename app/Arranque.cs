@@ -1,14 +1,16 @@
 using System;
 using System.IO;
 
-namespace Fila
+namespace NextUp
 {
-    // O atalho "Fila.lnk" na pasta de arranque do Windows: é ele que põe a Fila a correr quando a
+    // O atalho "NextUp.lnk" na pasta de arranque do Windows: é ele que põe o NextUp a correr quando a
     // pessoa inicia sessão. Aponta para este .exe (sem argumentos: arranca o guardião, que por sua
-    // vez arranca e vigia a app). Até à 1.0.1 chamava-se "Fila de atencao.lnk": Migrar() passa-o
-    // para o nome novo sem desligar o arranque.
+    // vez arranca e vigia a app). Até à 1.0.4 a app chamava-se Fila e o atalho "Fila.lnk" (antes
+    // disso, "Fila de atencao.lnk"): Migrar() passa-o para o nome novo sem desligar o arranque.
     static class Arranque
     {
+        static readonly string[] NOMES_ANTIGOS = { "Fila.lnk", "Fila de atencao.lnk" };
+
         static string Pasta
         {
             get { return Environment.GetFolderPath(Environment.SpecialFolder.Startup); }
@@ -16,31 +18,37 @@ namespace Fila
 
         static string Atalho
         {
-            get { return Path.Combine(Pasta, "Fila.lnk"); }
+            get { return Path.Combine(Pasta, "NextUp.lnk"); }
         }
 
-        static string AtalhoAntigo
+        // O primeiro atalho com um nome antigo que ainda exista (ou null).
+        static string AtalhoAntigo()
         {
-            get { return Path.Combine(Pasta, "Fila de atencao.lnk"); }
+            foreach (string nome in NOMES_ANTIGOS)
+            {
+                string caminho = Path.Combine(Pasta, nome);
+                if (File.Exists(caminho)) return caminho;
+            }
+            return null;
         }
 
-        // Ligado se existir o atalho, com o nome novo ou (ainda por migrar) com o antigo.
+        // Ligado se existir o atalho, com o nome novo ou (ainda por migrar) com um antigo.
         public static bool Ativo
         {
-            get { return File.Exists(Atalho) || File.Exists(AtalhoAntigo); }
+            get { return File.Exists(Atalho) || AtalhoAntigo() != null; }
         }
 
         // O programa para onde o atalho aponta (para ver se ainda é este).
         public static string Alvo()
         {
-            return LerAlvo(File.Exists(Atalho) ? Atalho : AtalhoAntigo);
+            return LerAlvo(File.Exists(Atalho) ? Atalho : AtalhoAntigo());
         }
 
         static string LerAlvo(string atalho)
         {
             try
             {
-                if (!File.Exists(atalho)) return null;
+                if (atalho == null || !File.Exists(atalho)) return null;
                 dynamic shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
                 dynamic ligacao = shell.CreateShortcut(atalho);
                 return (string)ligacao.TargetPath;
@@ -60,27 +68,37 @@ namespace Fila
             ligacao.Arguments = "";
             ligacao.WorkingDirectory = Caminhos.Perfil;
             ligacao.WindowStyle = 7;
-            ligacao.Description = "Fila";
+            ligacao.Description = "NextUp";
             ligacao.IconLocation = exe + ",0";
             ligacao.Save();
         }
 
-        // Passa o atalho do nome antigo para "Fila.lnk", mantendo o programa para onde apontava. Só
-        // tira o antigo depois de o novo existir: se algo falhar, a Fila continua a arrancar com o
-        // Windows como antes. Não faz nada se não houver atalho antigo.
+        static void ApagarAntigos()
+        {
+            foreach (string nome in NOMES_ANTIGOS)
+            {
+                string caminho = Path.Combine(Pasta, nome);
+                if (File.Exists(caminho)) File.Delete(caminho);
+            }
+        }
+
+        // Passa o atalho do nome antigo para "NextUp.lnk". O programa novo tem outro nome (NextUp.exe),
+        // por isso o atalho novo aponta para este .exe e não para onde o antigo apontava. Só tira o
+        // antigo depois de o novo existir: se algo falhar, o NextUp continua a arrancar com o Windows
+        // como antes. Não faz nada se não houver atalho antigo.
         public static void Migrar()
         {
             try
             {
-                if (!File.Exists(AtalhoAntigo)) return;
+                string antigo = AtalhoAntigo();
+                if (antigo == null) return;
                 if (!File.Exists(Atalho))
                 {
-                    string alvo = LerAlvo(AtalhoAntigo);
-                    Criar(string.IsNullOrEmpty(alvo) ? Caminhos.Exe : alvo);
+                    Criar(Caminhos.Exe);
                     if (!File.Exists(Atalho)) throw new IOException("o atalho novo não ficou criado");
                 }
-                File.Delete(AtalhoAntigo);
-                Registo.Info("arranque com o Windows: o atalho passou de \"Fila de atencao\" para \"Fila\"");
+                ApagarAntigos();
+                Registo.Info("arranque com o Windows: o atalho passou de \"" + Path.GetFileNameWithoutExtension(antigo) + "\" para \"NextUp\"");
             }
             catch (Exception e)
             {
@@ -95,12 +113,12 @@ namespace Fila
                 if (!ativo)
                 {
                     if (File.Exists(Atalho)) File.Delete(Atalho);
-                    if (File.Exists(AtalhoAntigo)) File.Delete(AtalhoAntigo);
+                    ApagarAntigos();
                     Registo.Info("arranque com o Windows: desligado");
                     return;
                 }
                 Criar(Caminhos.Exe);
-                if (File.Exists(AtalhoAntigo)) File.Delete(AtalhoAntigo);
+                ApagarAntigos();
                 Registo.Info("arranque com o Windows: ligado (" + Caminhos.Exe + ")");
             }
             catch (Exception e)

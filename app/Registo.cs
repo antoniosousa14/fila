@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Fila
+namespace NextUp
 {
     // Registo em ficheiro (app.log, ao lado dos outros da fila). Nunca lança: registar não pode
     // deitar abaixo a app. Passa de 512 KB e o ficheiro vira app.log.1 (só fica uma cópia).

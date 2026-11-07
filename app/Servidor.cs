@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fila
+namespace NextUp
 {
     // Cuida do servidor do gestor (gestor\servidor.mjs, Node): adota o que já estiver a correr e
     // saudável, senão arranca um, e volta a arrancá-lo se morrer ou deixar de responder.
@@ -34,7 +34,7 @@ namespace Fila
         public Servidor()
         {
             script = Caminhos.Servidor();
-            if (script == null) Registo.Erro("não encontrei gestor\\servidor.mjs (defina FILA_PROJETO)");
+            if (script == null) Registo.Erro("não encontrei gestor\\servidor.mjs (defina NEXTUP_PROJETO)");
         }
 
         static string ProcurarNode()

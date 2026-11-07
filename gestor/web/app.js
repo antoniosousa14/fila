@@ -2,7 +2,7 @@
 // Sem framework; todo o texto que vem dos chats passa por esc().
 const INTERVALO = 3000
 const MAX_RECENTES_FECHADO = 12
-const MIME_NO = 'application/x-fila-no'
+const MIME_NO = 'application/x-nextup-no'
 
 const $ = id => document.getElementById(id)
 const app = $('app')
@@ -146,7 +146,7 @@ function htmlTrabalho(e) {
 // Os mesmos para os projetos (ao abrir uma pasta) e para os Recentes. O filtro e a ordem ficam
 // guardados no navegador; a pesquisa não. Os números nos filtros contam o que cada um mostra.
 
-const CTRL_CHAVE = 'fila.controlos'
+const CTRL_CHAVE = 'nextup.controlos'
 
 const FILTROS = {
   proj: [
@@ -1153,7 +1153,7 @@ function linhaTaxa(h) {
 // O formulário da subscrição (valor, moeda e taxa de câmbio); o resumo está em htmlDestaque.
 function htmlSubscricao(h) {
   return `<div class="sub-form">
-      <label for="sub-mensal"><b>Quanto pagas por mês pela subscrição?</b><small>A Fila não deteta o teu plano: escreve o valor que pagas (com IVA). O custo na API está em dólares e converte-se com a taxa abaixo.</small></label>
+      <label for="sub-mensal"><b>Quanto pagas por mês pela subscrição?</b><small>O NextUp não deteta o teu plano: escreve o valor que pagas (com IVA). O custo na API está em dólares e converte-se com a taxa abaixo.</small></label>
       <div class="sub-linha">
         <input id="sub-mensal" class="filtro mono" type="number" min="0" max="100000" step="0.01" inputmode="decimal" value="${h.mensal ?? ''}" placeholder="0,00" aria-label="Valor mensal">
         <select id="sub-moeda" class="filtro" aria-label="Moeda"><option value="EUR"${h.moeda !== 'USD' ? ' selected' : ''}>€ por mês</option><option value="USD"${h.moeda === 'USD' ? ' selected' : ''}>$ por mês</option></select>
@@ -1954,11 +1954,11 @@ $('r-recentes').onclick = () => {
 function aplicarTema(tema) {
   document.documentElement.dataset.theme = tema
 }
-try { aplicarTema(localStorage.getItem('fila-tema') || 'dark') } catch {}
+try { aplicarTema(localStorage.getItem('nextup-tema') || localStorage.getItem('fila-tema') || 'dark') } catch {}
 $('tema').onclick = () => {
   const tema = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
   aplicarTema(tema)
-  try { localStorage.setItem('fila-tema', tema) } catch {}
+  try { localStorage.setItem('nextup-tema', tema) } catch {}
 }
 
 // Largura da barra lateral: arrasta-se a borda; duplo clique repõe. Fica guardada neste browser.
@@ -1969,7 +1969,7 @@ function porLargura(px) {
 
   return largura
 }
-try { const guardada = Number(localStorage.getItem('fila-lado')); if (guardada) porLargura(guardada) } catch {}
+try { const guardada = Number(localStorage.getItem('nextup-lado') || localStorage.getItem('fila-lado')); if (guardada) porLargura(guardada) } catch {}
 $('puxador').addEventListener('pointerdown', ev => {
   ev.preventDefault()
   const puxador = ev.currentTarget
@@ -1980,7 +1980,7 @@ $('puxador').addEventListener('pointerdown', ev => {
   const largar = () => {
     puxador.removeEventListener('pointermove', mover)
     document.body.classList.remove('a-redimensionar')
-    if (largura) try { localStorage.setItem('fila-lado', String(largura)) } catch {}
+    if (largura) try { localStorage.setItem('nextup-lado', String(largura)) } catch {}
   }
   puxador.addEventListener('pointermove', mover)
   puxador.addEventListener('pointerup', largar, { once: true })
@@ -1988,7 +1988,7 @@ $('puxador').addEventListener('pointerdown', ev => {
 })
 $('puxador').addEventListener('dblclick', () => {
   porLargura(LADO.padrao)
-  try { localStorage.removeItem('fila-lado') } catch {}
+  try { localStorage.removeItem('nextup-lado'); localStorage.removeItem('fila-lado') } catch {}
 })
 
 document.addEventListener('visibilitychange', () => { if (!document.hidden) atualizar() })

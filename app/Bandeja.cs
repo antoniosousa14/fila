@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Fila
+namespace NextUp
 {
-    // O ícone da Fila junto ao relógio: clique abre ou fecha o gestor; o menu (botão direito)
+    // O ícone do NextUp junto ao relógio: clique abre ou fecha o gestor; o menu (botão direito)
     // tem o resto. É a única parte visível da app quando a pílula está escondida, por isso é
     // também por aqui que se sai ou se reinicia.
     sealed class Bandeja : IDisposable
@@ -35,7 +35,7 @@ namespace Fila
             registo.Click += (o, e) => AbrirRegisto();
             itemArranque = new ToolStripMenuItem("Iniciar com o Windows");
             itemArranque.Click += (o, e) => Arranque.Definir(!Arranque.Ativo);
-            var reiniciar = new ToolStripMenuItem("Reiniciar a Fila");
+            var reiniciar = new ToolStripMenuItem("Reiniciar o NextUp");
             reiniciar.Click += (o, e) => reiniciarApp();
             var terminar = new ToolStripMenuItem("Sair");
             terminar.Click += (o, e) => sair();
@@ -54,7 +54,7 @@ namespace Fila
             icone = new NotifyIcon
             {
                 Icon = apagada,
-                Text = "Fila",
+                Text = "NextUp",
                 ContextMenuStrip = menu,
                 Visible = true,
             };
@@ -85,7 +85,7 @@ namespace Fila
                 estadoAceso = aceso;
                 icone.Icon = aceso ? acesa : apagada;
             }
-            string texto = esperam > 0 ? "Fila · " + esperam + " à espera" : "Fila · em dia";
+            string texto = esperam > 0 ? "NextUp · " + esperam + " à espera" : "NextUp · em dia";
             if (trabalham > 0) texto += " · " + trabalham + " a trabalhar";
             icone.Text = texto.Length > 63 ? texto.Substring(0, 63) : texto;
         }

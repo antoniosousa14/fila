@@ -2,10 +2,10 @@ import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// FILA_RAIZ, FILA_SESSOES, FILA_CONFIG_APP e FILA_PROJETOS servem para os testes apontarem para pastas temporárias.
+// NEXTUP_RAIZ, NEXTUP_SESSOES, NEXTUP_CONFIG_APP e NEXTUP_PROJETOS servem para os testes apontarem para pastas temporárias.
 export function pastas(env = process.env) {
   const casa = env.USERPROFILE || homedir()
-  const raiz = env.FILA_RAIZ || join(casa, '.claude', 'fila-atencao')
+  const raiz = env.NEXTUP_RAIZ || join(casa, '.claude', 'nextup')
   const appdata = env.APPDATA || join(casa, 'AppData', 'Roaming')
 
   return {
@@ -29,11 +29,11 @@ export function pastas(env = process.env) {
     erros: join(raiz, 'gestor-erros.log'),
     // Sinal para a barra pôr a janela do Claude à frente depois de abrir um link claude://.
     frente: join(raiz, 'claude-a-frente.json'),
-    sessoes: env.FILA_SESSOES || join(appdata, 'Claude', 'claude-code-sessions'),
+    sessoes: env.NEXTUP_SESSOES || join(appdata, 'Claude', 'claude-code-sessions'),
     // Só para leitura: tem segredos de servidores MCP (ver lib/grupos.mjs).
-    configApp: env.FILA_CONFIG_APP || join(appdata, 'Claude', 'claude_desktop_config.json'),
+    configApp: env.NEXTUP_CONFIG_APP || join(appdata, 'Claude', 'claude_desktop_config.json'),
     // Transcrições do Claude Code (só leitura: só contagens, horas e pastas).
-    projetos: env.FILA_PROJETOS || join(casa, '.claude', 'projects'),
+    projetos: env.NEXTUP_PROJETOS || join(casa, '.claude', 'projects'),
     precos: join(dirname(fileURLToPath(import.meta.url)), '..', 'precos.json'),
     ponta: join(dirname(fileURLToPath(import.meta.url)), '..', 'ponta.json'),
     web: join(dirname(fileURLToPath(import.meta.url)), '..', 'web'),

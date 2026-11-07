@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Fila
+namespace NextUp
 {
-    // O que o atalho de arranque corre: arranca a app (Fila.exe --app) e vigia-a. Se a app morrer
+    // O que o atalho de arranque corre: arranca a app (NextUp.exe --app) e vigia-a. Se a app morrer
     // por qualquer razão que não seja a pessoa mandar sair (um erro fatal, ser morta no Gestor de
     // Tarefas, o Windows a matar processos), arranca outra. Este processo é pequeno e quase não
     // faz nada, por isso não tem como cair pelas mesmas razões.
     static class Guardiao
     {
-        const string MUTEX = @"Local\fila-atencao-guardiao";
+        const string MUTEX = @"Local\nextup-guardiao";
 
         public static int Correr()
         {
@@ -22,7 +22,7 @@ namespace Fila
             {
                 if (!minha)
                 {
-                    Registo.Info("já há um guardião: peço à Fila para abrir o gestor");
+                    Registo.Info("já há um guardião: peço ao NextUp para abrir o gestor");
                     Sinal.Enviar(Aplicacao.EVENTO_ABRIR);
                     return 0;
                 }
@@ -38,7 +38,7 @@ namespace Fila
                             UseShellExecute = false,
                             WorkingDirectory = Caminhos.Perfil,
                         };
-                        arranque.Environment["FILA_GUARDIAO"] = "1";
+                        arranque.Environment["NEXTUP_GUARDIAO"] = "1";
                         using (var app = Process.Start(arranque))
                         {
                             Registo.Info("app arrancada (pid " + app.Id + ")");
@@ -52,7 +52,7 @@ namespace Fila
                         codigo = -1;
                     }
                     Registo.Info("a app terminou com o código " + codigo);
-                    if (codigo == 0) return 0;                       // saída pedida, ou já havia uma Fila
+                    if (codigo == 0) return 0;                       // saída pedida, ou já havia um NextUp
                     if (codigo == Aplicacao.SAIDA_REINICIAR) continue; // reinício pedido na bandeja
 
                     // Caiu. Volta a arrancá-la, mas sem ciclos apertados: se cair mais de 5 vezes em

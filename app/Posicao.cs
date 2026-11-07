@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Windows;
 
-namespace Fila
+namespace NextUp
 {
     // O que a barra lembra entre arranques: onde a pílula está (o canto inferior direito dela) e
     // se a pílula e o gestor estão à vista. O ficheiro tem o mesmo formato da barra em PowerShell

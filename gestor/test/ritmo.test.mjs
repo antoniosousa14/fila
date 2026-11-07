@@ -87,7 +87,7 @@ test('situacaoPorLocal liga pelo id local_ ou pela sessão do CLI do chat', () =
 })
 
 test('lerSituacoes lê a pasta, ignora o que não é válido e usa cache', async t => {
-  const pasta = await mkdtemp(join(tmpdir(), 'fila-sit-'))
+  const pasta = await mkdtemp(join(tmpdir(), 'nextup-sit-'))
   t.after(() => rm(pasta, { recursive: true, force: true }))
   await mkdir(pasta, { recursive: true })
   await writeFile(join(pasta, 's1.json'), JSON.stringify({ sessao: 's1', local: 'local_1', feito: [{ texto: 'A', em: 1 }], falta: [] }))

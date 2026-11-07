@@ -9,7 +9,7 @@ const SUFIXO_DISPENSA = '.dispensado.json'
 
 export async function caminhos($: EngineInterface): Promise<Caminhos> {
   const casa = (await $.env.get('USERPROFILE')) ?? ''
-  const raiz = `${casa}/.claude/fila-atencao`
+  const raiz = `${casa}/.claude/nextup`
 
   return { raiz, itens: `${raiz}/itens`, foco: `${raiz}/foco.json`, consumo: `${raiz}/consumo`, saida: `${raiz}/saida`, situacao: `${raiz}/situacao` }
 }

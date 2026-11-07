@@ -1,6 +1,6 @@
-# Contribuir para a Fila
+# Contribuir para o NextUp
 
-Obrigado por quereres ajudar. A Fila é pequena e tem um dono que revê tudo: **ninguém tem escrita direta no
+Obrigado por quereres ajudar. O NextUp é pequeno e tem um dono que revê tudo: **ninguém tem escrita direta no
 `master`**. Contribui por *pull request* a partir de um fork.
 
 ## Antes de começar

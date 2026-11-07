@@ -113,7 +113,7 @@ test('resumirCauda: lista de tarefas só com atualizações parciais fica marcad
 })
 
 test('criarContinuidade: acha a transcrição pela sessão do CLI e guarda em cache o que não mudou', async t => {
-  const base = await mkdtemp(join(tmpdir(), 'fila-cont-'))
+  const base = await mkdtemp(join(tmpdir(), 'nextup-cont-'))
   t.after(() => rm(base, { recursive: true, force: true }))
   await mkdir(join(base, 'C--x-projeto'), { recursive: true })
   const ficheiro = join(base, 'C--x-projeto', 'cli-1.jsonl')
@@ -133,7 +133,7 @@ test('criarContinuidade: acha a transcrição pela sessão do CLI e guarda em ca
 })
 
 test('criarContinuidade: alarga a leitura quando o fim não tem nenhuma mensagem da pessoa', async t => {
-  const base = await mkdtemp(join(tmpdir(), 'fila-cont-'))
+  const base = await mkdtemp(join(tmpdir(), 'nextup-cont-'))
   t.after(() => rm(base, { recursive: true, force: true }))
   await mkdir(join(base, 'p'), { recursive: true })
   // Mais de 400 KB de resultados de ferramentas depois do último pedido.

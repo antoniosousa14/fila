@@ -7,7 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Fila
+namespace NextUp
 {
     // As cores do gestor (gestor/web/estilo.css, tema escuro).
     static class Paleta

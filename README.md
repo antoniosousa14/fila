@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/logo.svg" width="88" alt="Fila">
+  <img src="docs/logo.svg" width="88" alt="NextUp">
 </p>
 
-<h1 align="center">Fila</h1>
+<h1 align="center">NextUp</h1>
 
 <p align="center">
   <b>Stop hopping from chat to chat.</b><br>
@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img alt="Version 1.0.4" src="https://img.shields.io/badge/release-1.0.4-ff7a1a">
+  <img alt="Version 1.1.0" src="https://img.shields.io/badge/release-1.1.0-ff7a1a">
   <img alt="Windows 11" src="https://img.shields.io/badge/Windows-11-0078d4">
   <img alt=".NET 9" src="https://img.shields.io/badge/.NET-9-512bd4">
   <img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-339933">
@@ -30,7 +30,7 @@ When you work with five or six Claude Code chats at the same time, the hard part
 knowing **whom to answer first**. Every chat that finishes sits there quietly waiting for you, and you go
 through them one by one to find out which was which.
 
-Fila answers three questions without opening a single chat:
+NextUp answers three questions without opening a single chat:
 
 1. **What is waiting for me, and what is most urgent?**
 2. **What is working, and how far along is it?**
@@ -61,7 +61,7 @@ pace, and peak hours.
 
 - **Limits** (week and 5-hour session) are read from the Claude app itself, for the account you are signed
   in with, so they work whatever plan you have.
-- **Savings versus your subscription:** Fila does not detect your plan. You type what you pay per month in
+- **Savings versus your subscription:** NextUp does not detect your plan. You type what you pay per month in
   the Consumo tab, and the savings are the API-equivalent cost minus that amount.
 
 ### Dismiss without guilt
@@ -123,10 +123,10 @@ flowchart LR
   subgraph claude["Claude app · several chats"]
     mod["Mod (in every chat)"]
   end
-  dados[("~/.claude/fila-atencao")]
+  dados[("~/.claude/nextup")]
   fonte["Claude sessions, groups and transcripts\n(read-only)"]
   gestor["Manager · Node\n127.0.0.1:4730"]
-  app["Fila.exe · guardian"]
+  app["NextUp.exe · guardian"]
 
   mod -- "queue, status, usage" --> dados
   gestor -- reads --> dados
@@ -138,10 +138,10 @@ flowchart LR
   janela --> gestor
 ```
 
-- The **mod** runs inside every Claude Code chat and writes its state to `%USERPROFILE%\.claude\fila-atencao\`.
+- The **mod** runs inside every Claude Code chat and writes its state to `%USERPROFILE%\.claude\nextup\`.
 - The **manager** is a local server (Node, no dependencies) that joins that state with the Claude app's
   sessions, which it **only reads**.
-- **`Fila.exe`** shows the pill, opens the manager in a window and watches over everything.
+- **`NextUp.exe`** shows the pill, opens the manager in a window and watches over everything.
 
 ## Requirements
 
@@ -155,18 +155,18 @@ flowchart LR
 
 ## Installation
 
-1. **Download** `Fila-1.0.4-win-x64.zip` from the [Releases](../../releases) page and extract it to a folder
-   that will stay put, for example `C:\Fila`. The mod is loaded from that folder, so do not delete or move it
+1. **Download** `NextUp-1.1.0-win-x64.zip` from the [Releases](../../releases) page and extract it to a folder
+   that will stay put, for example `C:\NextUp`. The mod is loaded from that folder, so do not delete or move it
    afterwards.
-   > `Fila.exe` is not signed: Windows may warn that it does not recognise it. Before extracting, unblock the
-   > zip (`Unblock-File .\Fila-1.0.4-win-x64.zip`) or, in the warning, choose *More info → Run anyway*.
+   > `NextUp.exe` is not signed: Windows may warn that it does not recognise it. Before extracting, unblock the
+   > zip (`Unblock-File .\NextUp-1.1.0-win-x64.zip`) or, in the warning, choose *More info → Run anyway*.
 
 2. **Connect the mod to Claude Code.** In `~/.claude/settings.json` (make a copy first), add to the `env` block:
 
    ```json
    {
      "env": {
-       "CLAUDE_CODE_PLUGIN_DIRS": "C:\\Fila\\mod",
+       "CLAUDE_CODE_PLUGIN_DIRS": "C:\\NextUp\\mod",
        "CLAUDE_CODE_PLUGIN_DIR_WATCH": "1"
      }
    }
@@ -174,19 +174,26 @@ flowchart LR
 
    `CLAUDE_CODE_PLUGIN_DIR_WATCH=1` reloads the mod whenever its code changes.
 
-3. **Start Fila:** run `C:\Fila\Fila.exe`. The pill appears in the bottom-right corner.
+3. **Start NextUp:** run `C:\NextUp\NextUp.exe`. The pill appears in the bottom-right corner.
 
-4. **Start with Windows** (optional): `C:\Fila\Fila.exe --arranque on`, or switch it on in the tray icon's menu.
+4. **Start with Windows** (optional): `C:\NextUp\NextUp.exe --arranque on`, or switch it on in the tray icon's menu.
 
 5. **Open a new chat** in Claude Code. The mod only loads in chats you open from here on; the ones that were
    already open are left out. When that chat finishes its first turn, it shows up in the queue.
 
 6. **Orchestrator** (optional): a chat just for status reports on all your chats and for sending messages,
    always with your confirmation.
-   - Copy `C:\Fila\skills\orquestrar` to `~/.claude/skills/`.
-   - Open a chat for it and tell Fila which one it is: create `%USERPROFILE%\.claude\fila-atencao\orquestrador.json`
+   - Copy `C:\NextUp\skills\orquestrar` to `~/.claude/skills/`.
+   - Open a chat for it and tell NextUp which one it is: create `%USERPROFILE%\.claude\nextup\orquestrador.json`
      with `{"local":"local_…"}`, where `local_…` is the name of that chat's file in
      `%APPDATA%\Claude\claude-code-sessions\<account>\<organisation>\`. The orchestrator stays out of the queue.
+
+### Upgrading from Fila (1.0.4 or earlier)
+
+NextUp is the new name of Fila (November 2026). Quit Fila first (tray icon, or `Fila.exe --sair`), extract the new zip and point
+`CLAUDE_CODE_PLUGIN_DIRS` at its `mod` folder. On its first start NextUp moves your data by itself:
+`%USERPROFILE%\.claude\fila-atencao` to `%USERPROFILE%\.claude\nextup`, `%LOCALAPPDATA%\Fila` to `%LOCALAPPDATA%\NextUp`, and the
+Windows start-up shortcut. Chats that were already open keep the old mod until you reopen them. Then delete the old `Fila` folder.
 
 ## Daily use
 
@@ -229,13 +236,13 @@ flowchart LR
 - Chats opened before a mod update keep the old mod until they finish a turn.
 - A chat closed mid-turn can keep showing as "working" (for up to 3 h); **Dispensar** removes it.
 - Peak hours have no official rule in force: they are an estimate from your own readings.
-- `Fila.exe` is not signed.
+- `NextUp.exe` is not signed.
 
 ## Troubleshooting
 
 | Symptom | What to do |
 |---|---|
-| The pill does not appear | Look for the icon in the tray; if it is not there, run `Fila.exe` and check `%USERPROFILE%\.claude\fila-atencao\app.log`. |
+| The pill does not appear | Look for the icon in the tray; if it is not there, run `NextUp.exe` and check `%USERPROFILE%\.claude\nextup\app.log`. |
 | The manager opens empty or does not open | Check that Node is installed (`node --version`). In the tray icon, choose *Reiniciar o servidor do gestor* (restart the manager's server); errors go to `gestor-erros.log`. |
 | The dashboard shows no chats | The mod only loads in **new** chats once `settings.json` is set up. Open a new chat and let it finish a turn. |
 | Port 4730 is taken | The manager uses the next free one; the app reads it from `gestor.json`. |
@@ -258,9 +265,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File app\publicar.ps1 -Arrancar  
 ## Uninstall
 
 1. Remove the two `CLAUDE_CODE_PLUGIN_*` lines from the `env` block of `~/.claude/settings.json`.
-2. Quit Fila from the tray icon (or `Fila.exe --sair`) and switch off the autostart (`Fila.exe --arranque off`).
-3. Optional: delete `%USERPROFILE%\.claude\fila-atencao\` (queue, organisation, usage, history, messages and
-   logs) and `%LOCALAPPDATA%\Fila\` (the WebView2 profile).
+2. Quit NextUp from the tray icon (or `NextUp.exe --sair`) and switch off the autostart (`NextUp.exe --arranque off`).
+3. Optional: delete `%USERPROFILE%\.claude\nextup\` (queue, organisation, usage, history, messages and
+   logs) and `%LOCALAPPDATA%\NextUp\` (the WebView2 profile).
 
 ## Contributing
 
@@ -270,7 +277,7 @@ and what not to put in the sample data). For a bug or an idea, open an issue. Fo
 
 ## License
 
-[MIT](LICENSE) © 2026 António Sousa. `Fila.exe` ships with the *Microsoft Edge WebView2 SDK*
+[MIT](LICENSE) © 2026 António Sousa. `NextUp.exe` ships with the *Microsoft Edge WebView2 SDK*
 (`Microsoft.Web.WebView2`), which has its own license.
 
-Version **1.0.4**.
+Version **1.1.0**.
